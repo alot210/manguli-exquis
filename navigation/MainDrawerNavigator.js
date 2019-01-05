@@ -1,6 +1,7 @@
 import React from 'react';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
+import { Title } from 'native-base';
 
 import HomeScreen from '../screens/HomeScreen';
 import TutorialScreen from '../screens/TutorialScreen';
@@ -16,9 +17,12 @@ export default class MainDrawerNavigator extends React.Component {
 }
 
 const CostumDrawerComponent = (props) => (
-  <SafeAreaView style={{backgroundColor: Colors.primaryColor, flex: 1}}>
-      <DrawerItems {...props} />
-  </SafeAreaView>
+  <View>
+    <View style={{backgroundColor: Colors.primaryColor, height: 64, justifyContent: 'center', alignItems: 'center'}}>
+      <Title style={{color: Colors.primaryTextColor, fontSize: 24, marginTop: 20}}>Menu</Title>
+    </View>
+    <DrawerItems {...props}/>
+  </View>
 );
 
 const AppDrawerNavigator = createDrawerNavigator({
@@ -31,5 +35,8 @@ const AppDrawerNavigator = createDrawerNavigator({
     activeTintColor: Colors.secondaryTextColor,
     activeBackgroundColor: Colors.secondaryColor,
     inactiveTintColor: Colors.primaryTextColor,
+    itemsContainerStyle: {
+      paddingVertical: 0,
+    }
   }
 });
