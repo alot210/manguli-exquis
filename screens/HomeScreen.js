@@ -5,6 +5,8 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  Button,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -12,46 +14,112 @@ import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
 
+//Firebase
+import * as firebase from 'firebase';
+// Initialize Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyAYyXg8VkGWkRnUPwfLRP89BFYnrYri4bA",
+    authDomain: "manguli-exquis.firebaseapp.com",
+    databaseURL: "https://manguli-exquis.firebaseio.com",
+    storageBucket: "manguli-exquis.appspot.com"
+};
+firebase.initializeApp(firebaseConfig);
+
+// Get a reference to the database service
+let database = firebase.database();
+
+
 export default class HomeScreen extends React.Component {
+  constructor(props){
+      super(props);
+      this.state = {  username: "Anonymous",
+                      email: "E-Mail",
+                      password: "Passwort",
+                      user_id: 1}
+  }
+
   static navigationOptions = {
     header: null,
   };
+
+  setUserData(){
+
+      let _userID = this.state.user_id++;
+      let _username = this.state.username;
+      let _email = this.state.email;
+      let _password = this.state.password;
+      firebase.database().ref('user/' + _userID).set({
+          userID: _userID,
+          username: _username,
+          email: _email,
+          password: _password
+      });
+      console.log("SetUser: "+_username);
+  }
+
+  getUserData(){
+      let alluser = firebase.database().ref('user/');
+      alluser.on('value', function (snapshot) {
+          //console.log(snapshot.val());
+          let data = [];
+          snapshot.forEach(function (item) {
+              data.push(item.child("userID").val());
+          });
+          console.log(data);
+      });
+
+
+      let username = firebase.database().ref('user/' + 2);
+      username.on('value', function (snapshot) {
+          var user = (snapshot.val().username) || 'Anonymous';
+          console.log("TEST: " + user);
+      });
+
+
+
+  /*this.setState(state => ({vorname: user}));*/
+  }
 
   render() {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
 
           <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
-            <Text style={styles.getStartedText}>Get started by opening</Text>
             <Text>Manguli Exquis</Text>
 
-            <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-              <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
+            <TextInput
+                style={{height: 40, width: 100, borderColor: '#000000', borderWidth: 1}}
+                value={this.state.username}
+                onChangeText={(username) => this.setState({username})}
+            />
+            <TextInput
+                style={{height: 40, width: 100, borderColor: '#000000', borderWidth: 1}}
+                value={this.state.email}
+                onChangeText={(email) => this.setState({email})}
+            />
+            <TextInput
+                style={{height: 40, width: 100, borderColor: '#000000', borderWidth: 1}}
+                value={this.state.password}
+                onChangeText={(password) => this.setState({password})}
+            />
+
+            <Button
+                onPress={()=>this.setUserData()}
+                title="Hinzufügen"
+                color="#00ff00"
+                accessibilityLabel="Learn more about this purple button"
+            />
+
+            <View style={{paddingTop: 20}}>
+              <Button
+                  onPress={()=>this.getUserData()}
+                  title={"Auslesen test"}
+                  color="#ff0000"
+              />
             </View>
-
-            <Text style={styles.getStartedText}>
-              Change this text and your app will automatically reload.
-            </Text>
           </View>
 
-          <View style={styles.helpContainer}>
-            <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
-            </TouchableOpacity>
-          </View>
         </ScrollView>
 
         <View style={styles.tabBarInfoContainer}>
