@@ -32,8 +32,12 @@ let database = firebase.database();
 export default class HomeScreen extends React.Component {
   constructor(props){
       super(props);
+
+      //handleCreate = {this.handleCreate.bind(this)}
+      //loginUser = {this.loginUser().bind(this)}
+
       this.state = {  username: "Anonymous",
-                      email: "E-Mail",
+                      email: "test@test.de",
                       password: "Passwort",
                       user_id: 1}
   }
@@ -42,38 +46,109 @@ export default class HomeScreen extends React.Component {
     header: null,
   };
 
-  setUserData(){
-
-      let _userID = this.state.user_id++;
+  registerUser(){
+      let _userID = 1;
       let _username = this.state.username;
       let _email = this.state.email;
       let _password = this.state.password;
-      firebase.database().ref('user/' + _userID).set({
-          userID: _userID,
-          username: _username,
-          email: _email,
-          password: _password
+      let data = [];
+      let found = false;
+
+      let allUser = firebase.database().ref('user/');
+      allUser.once('value', function (snapshot) {
+          snapshot.forEach(function (item) {
+              data.push(item.child("email").val());
+              _userID = item.child("userID").val();
+          });
+          //console.log("inner: "+data);
+          //ID hochzählen für nächsten
+          _userID = _userID+1;
+
+          /*console.log(data);
+          console.log(data.length);
+          console.log(data[0]);
+          console.log(_email);
+          console.log("ID"+_userID);*/
+          for(let i = 0; i < data.length; i++){
+              if(data[i]===_email){
+                  found = true;
+                  break;
+              } else {
+                  found = false;
+              }
+          }
+          if(!found){
+              firebase.database().ref('user/' + _userID).set({
+                  userID: _userID,
+                  username: _username,
+                  email: _email,
+                  password: _password
+              });
+              console.log(_username+" wurde registriert");
+          } else {
+              console.log("Sie sind bereits registriert!!!")
+          }
       });
-      console.log("SetUser: "+_username);
+  }
+
+  loginUser(_that) {
+      let _userID = 1;
+      let _username = this.state.username;
+      let _email = this.state.email;
+      let _password = this.state.password;
+      let data = [];
+
+      let allUser = firebase.database().ref('user/');
+      allUser.once('value', function (snapshot) {
+          snapshot.forEach(function (item) {
+              data.push(item)
+          });
+          //console.log(data[0].child("username").val());
+          //console.log(data[1].child("password").val());
+          let logged = false;
+          let loggedUser;
+          for(let i = 0; i < data.length; i++){
+              if(data[i].child("email").val() === _email &&
+                 data[i].child("password").val() === _password){
+                  logged = true;
+                  loggedUser = data[i];
+                  console.log(loggedUser);
+                  console.log(loggedUser.child("username").val());
+              }
+          }
+          if(logged){
+              console.log("Sie wurden angemeldet!");
+              _that.setState(state => ({username: loggedUser.child("username").val(),
+                                        email: loggedUser.child("email").val(),
+                                        password: loggedUser.child("password").val(),
+                                        user_id: loggedUser.child("userID").val()}));
+          } else {
+              console.log("Mail oder Passwort sind falsch!");
+          }
+
+      });
   }
 
   getUserData(){
       let alluser = firebase.database().ref('user/');
       alluser.on('value', function (snapshot) {
-          //console.log(snapshot.val());
           let data = [];
           snapshot.forEach(function (item) {
-              data.push(item.child("userID").val());
+              data.push(item.child("email").val());
           });
+
+          data.forEach(function (item) {
+              console.log("array: "+item);
+          })
           console.log(data);
       });
 
 
-      let username = firebase.database().ref('user/' + 2);
+      /*let username = firebase.database().ref('user/' + 2);
       username.on('value', function (snapshot) {
           var user = (snapshot.val().username) || 'Anonymous';
           console.log("TEST: " + user);
-      });
+      });*/
 
 
 
@@ -105,11 +180,18 @@ export default class HomeScreen extends React.Component {
             />
 
             <Button
-                onPress={()=>this.setUserData()}
+                onPress={() => this.registerUser()}
                 title="Hinzufügen"
                 color="#00ff00"
-                accessibilityLabel="Learn more about this purple button"
             />
+
+              <View style={{paddingTop: 20}}>
+                  <Button
+                      onPress={()=>this.loginUser(this)}
+                      title={"Anmelden"}
+                      color="#0000ff"
+                  />
+              </View>
 
             <View style={{paddingTop: 20}}>
               <Button
