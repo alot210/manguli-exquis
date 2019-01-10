@@ -15,4 +15,5 @@ export default {
   secondaryColor: '#005792',
   primaryTextColor: '#FD5F00',
   secondaryTextColor: '#F6F6E9',
+  highlightColor: '#F2C545',
 };
