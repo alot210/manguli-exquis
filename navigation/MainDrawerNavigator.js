@@ -8,6 +8,8 @@ import TutorialScreen from '../screens/TutorialScreen';
 import CreditScreen from '../screens/CreditScreen';
 import Colors from "../constants/Colors";
 import StartScreen from "../screens/StartScreen";
+import CreateRoomScreen from "../screens/CreateRoomScreen";
+import JoinRoomScreen from "../screens/JoinRoomScreen";
 
 const CostumDrawerComponent = (props) => (
   <View>
@@ -23,6 +25,8 @@ export default AppDrawerNavigator = createDrawerNavigator({
   Tutorial: TutorialScreen,
   Credits: CreditScreen,
   Start: StartScreen,
+  CreateRoom: CreateRoomScreen,
+  JoinRoom: JoinRoomScreen,
 }, {
   contentComponent: CostumDrawerComponent,
   contentOptions: {

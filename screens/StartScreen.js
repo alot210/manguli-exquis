@@ -3,6 +3,7 @@ import { StyleSheet, StatusBar, SafeAreaView } from 'react-native';
 import { Header, Left, Right, Icon, Body, Title, Container, Content, Text, Button } from 'native-base';
 
 import Colors from "../constants/Colors";
+import HeaderBar from "../components/HeaderBar";
 
 export default class StartScreen extends React.Component {
   static navigationOptions = {
@@ -12,20 +13,11 @@ export default class StartScreen extends React.Component {
   render() {
       return (
           <Container>
-            <Header style={{backgroundColor: Colors.primaryColor}}>
-                <StatusBar barStyle='light-content'/>
-                <Left>
-                    <Icon style={{color: Colors.primaryTextColor}} name="menu" onPress={()=> this.props.navigation.openDrawer()}/>
-                </Left>
-                <Body style={{flex: 2}}>
-                <Title style={{color: Colors.primaryTextColor, fontSize: 24}}>Lobby</Title>
-                </Body>
-                <Right/>
-            </Header>
+            <HeaderBar {...this.props} title='Lobby'/>
             <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
-              <Text style={{alignSelf: 'center', paddingBottom: 32}}>Wollen Sie einen Raum erstellen oder beitreten?</Text>
+              <Text style={{alignSelf: 'center', paddingBottom: 32}}>Erstelle oder trete einen Raum bei!</Text>
               <Button primary style={{
-                backgroundColor: Colors.primaryColor,
+                backgroundColor: Colors.secondaryColor,
                 alignSelf: 'center',
                 marginBottom: 10,
                 width: 100
@@ -33,7 +25,7 @@ export default class StartScreen extends React.Component {
                 <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Erstellen</Text>
               </Button>
               <Button primary style={{
-                backgroundColor: Colors.primaryColor,
+                backgroundColor: Colors.secondaryColor                                                                                                 ,
                 alignSelf: 'center',
                 marginBottom: 10,
                 width: 100
