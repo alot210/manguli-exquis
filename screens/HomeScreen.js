@@ -4,9 +4,6 @@ import Colors from '../constants/Colors';
 import {Header, Left, Right, Icon, Body, Title, Container, Content, Button, Text} from 'native-base';
 
 export default class HomeScreen extends React.Component {
-    static navigationOptions = {
-        title: null,
-    };
     render() {
         return (
             <Container>
@@ -36,7 +33,7 @@ export default class HomeScreen extends React.Component {
                         alignSelf: 'center',
                         marginBottom: 10,
                         width: 100
-                    }} onPress={  () => this.props.navigation.navigate('Start')}>
+                    }} onPress={  () => this.props.navigation.navigate('Tutorial')}>
                         <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Tutorial</Text>
                     </Button>
                     <Button primary style={{
@@ -44,7 +41,7 @@ export default class HomeScreen extends React.Component {
                         alignSelf: 'center',
                         marginBottom: 10,
                         width: 100
-                    }} onPress={ () => this.props.navigation.navigate('Start')}>
+                    }} onPress={ () => this.props.navigation.navigate('Credits')}>
                         <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Credits</Text>
                     </Button>
                 </SafeAreaView>
