@@ -16,7 +16,7 @@ export default class HomeScreen extends React.Component {
                         alignSelf: 'center',
                         marginBottom: 10,
                         width: 100
-                    }} onPress={ () => this.props.navigation.navigate('Start') }>
+                    }} onPress={ () => this.props.navigation.navigate('Login') }>
                         <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Start</Text>
                     </Button>
                     <Button primary style={{

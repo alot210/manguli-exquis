@@ -1,24 +1,11 @@
-/**
- * Created by Jens on 15.01.2019.
- */
 import React from 'react';
-import {
-    Image,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    Button,
-    TextInput,
-    TouchableOpacity,
-    View,
-} from 'react-native';
-import { WebBrowser } from 'expo';
-
-import { MonoText } from '../components/StyledText';
-
-//Firebase
+import { View } from 'react-native';
+import { Container, Content, Form, Label, Input, Item, Button, Text } from 'native-base';
 import * as firebase from 'firebase';
+
+import HeaderBar from "../components/HeaderBar";
+import Colors from "../constants/Colors";
+
 // Initialize Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyAYyXg8VkGWkRnUPwfLRP89BFYnrYri4bA",
@@ -156,183 +143,61 @@ export default class LoginScreen extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+          <Container>
+            <HeaderBar {...this.props} title='Login' />
+            <Content>
+              <Form style={{marginTop: 64}}>
+                <Item floatingLabel>
+                  <Label>Username</Label>
+                  <Input value={this.state.username} onChangeText={(username) => this.setState({username})} />
+                </Item>
+                <Item floatingLabel>
+                  <Label>E-Mail</Label>
+                  <Input value={this.state.email} onChangeText={(email) => this.setState({email})} />
+                </Item>
+                <Item floatingLabel last>
+                  <Label>Password</Label>
+                  <Input value={this.state.password} onChangeText={(password) => this.setState({password})} />
+                </Item>
+              </Form>
 
-                    <View style={styles.getStartedContainer}>
-                        <Text>Manguli Exquis</Text>
+              <View style={{marginTop: 64}}>
+                <Button
+                  style={{
+                    backgroundColor: Colors.secondaryColor,
+                    alignSelf: 'center',
+                    marginBottom: 10,
+                    width: 150
+                  }}
+                  onPress={() => this.registerUser()}>
+                  <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Hinzufügen</Text>
+                </Button>
+                <Button
+                  style={{
+                    backgroundColor: Colors.secondaryColor,
+                    alignSelf: 'center',
+                    marginBottom: 10,
+                    width: 150
+                  }}
+                  onPress={()=>this.loginUser(this)}
+                >
+                  <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Anmelden</Text>
+                </Button>
 
-                        <TextInput
-                            style={{height: 40, width: 100, borderColor: '#000000', borderWidth: 1}}
-                            value={this.state.username}
-                            onChangeText={(username) => this.setState({username})}
-                        />
-                        <TextInput
-                            style={{height: 40, width: 100, borderColor: '#000000', borderWidth: 1}}
-                            value={this.state.email}
-                            onChangeText={(email) => this.setState({email})}
-                        />
-                        <TextInput
-                            style={{height: 40, width: 100, borderColor: '#000000', borderWidth: 1}}
-                            value={this.state.password}
-                            onChangeText={(password) => this.setState({password})}
-                        />
-
-                        <Button
-                            onPress={() => this.registerUser()}
-                            title="Hinzufügen"
-                            color="#00ff00"
-                        />
-
-                        <View style={{paddingTop: 20}}>
-                            <Button
-                                onPress={()=>this.loginUser(this)}
-                                title={"Anmelden"}
-                                color="#0000ff"
-                            />
-                        </View>
-
-                        <View style={{paddingTop: 20}}>
-                            <Button
-                                onPress={()=>this.getUserData()}
-                                title={"Auslesen test"}
-                                color="#ff0000"
-                            />
-                        </View>
-                    </View>
-
-                </ScrollView>
-
-                <View style={styles.tabBarInfoContainer}>
-                    <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-
-                    <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-                        <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
-                    </View>
-                </View>
-            </View>
+                <Button
+                  style={{
+                    backgroundColor: Colors.secondaryColor,
+                    alignSelf: 'center',
+                    marginBottom: 10,
+                    width: 150
+                  }}
+                  onPress={()=>this.getUserData()}
+                >
+                  <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Auslesen Test</Text>
+                </Button>
+              </View>
+            </Content>
+          </Container>
         );
     }
-
-    _maybeRenderDevelopmentModeWarning() {
-        if (__DEV__) {
-            const learnMoreButton = (
-                <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-                    Learn more
-                </Text>
-            );
-
-            return (
-                <Text style={styles.developmentModeText}>
-                    Development mode is enabled, your app will be slower but you can use useful development
-                    tools. {learnMoreButton}
-                </Text>
-            );
-        } else {
-            return (
-                <Text style={styles.developmentModeText}>
-                    You are not in development mode, your app will run at full speed.
-                </Text>
-            );
-        }
-    }
-
-    _handleLearnMorePress = () => {
-        WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-    };
-
-    _handleHelpPress = () => {
-        WebBrowser.openBrowserAsync(
-            'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-        );
-    };
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-    developmentModeText: {
-        marginBottom: 20,
-        color: 'rgba(0,0,0,0.4)',
-        fontSize: 14,
-        lineHeight: 19,
-        textAlign: 'center',
-    },
-    contentContainer: {
-        paddingTop: 30,
-    },
-    welcomeContainer: {
-        alignItems: 'center',
-        marginTop: 10,
-        marginBottom: 20,
-    },
-    welcomeImage: {
-        width: 100,
-        height: 80,
-        resizeMode: 'contain',
-        marginTop: 3,
-        marginLeft: -10,
-    },
-    getStartedContainer: {
-        alignItems: 'center',
-        marginHorizontal: 50,
-    },
-    homeScreenFilename: {
-        marginVertical: 7,
-    },
-    codeHighlightText: {
-        color: 'rgba(96,100,109, 0.8)',
-    },
-    codeHighlightContainer: {
-        backgroundColor: 'rgba(0,0,0,0.05)',
-        borderRadius: 3,
-        paddingHorizontal: 4,
-    },
-    getStartedText: {
-        fontSize: 17,
-        color: 'rgba(96,100,109, 1)',
-        lineHeight: 24,
-        textAlign: 'center',
-    },
-    tabBarInfoContainer: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        ...Platform.select({
-            ios: {
-                shadowColor: 'black',
-                shadowOffset: { height: -3 },
-                shadowOpacity: 0.1,
-                shadowRadius: 3,
-            },
-            android: {
-                elevation: 20,
-            },
-        }),
-        alignItems: 'center',
-        backgroundColor: '#fbfbfb',
-        paddingVertical: 20,
-    },
-    tabBarInfoText: {
-        fontSize: 17,
-        color: 'rgba(96,100,109, 1)',
-        textAlign: 'center',
-    },
-    navigationFilename: {
-        marginTop: 5,
-    },
-    helpContainer: {
-        marginTop: 15,
-        alignItems: 'center',
-    },
-    helpLink: {
-        paddingVertical: 15,
-    },
-    helpLinkText: {
-        fontSize: 14,
-        color: '#2e78b7',
-    },
-});
