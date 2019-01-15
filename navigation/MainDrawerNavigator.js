@@ -10,6 +10,7 @@ import Colors from "../constants/Colors";
 import StartScreen from "../screens/StartScreen";
 import CreateRoomScreen from "../screens/CreateRoomScreen";
 import JoinRoomScreen from "../screens/JoinRoomScreen";
+import LoginScreen from '../screens/LoginScreen';
 
 const CostumDrawerComponent = (props) => (
   <View>
@@ -27,6 +28,7 @@ export default AppDrawerNavigator = createDrawerNavigator({
   Start: StartScreen,
   CreateRoom: CreateRoomScreen,
   JoinRoom: JoinRoomScreen,
+  Login: LoginScreen,
 }, {
   contentComponent: CostumDrawerComponent,
   contentOptions: {
