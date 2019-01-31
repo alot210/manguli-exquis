@@ -11,6 +11,10 @@ import StartScreen from "../screens/StartScreen";
 import CreateRoomScreen from "../screens/CreateRoomScreen";
 import JoinRoomScreen from "../screens/JoinRoomScreen";
 import LoginScreen from '../screens/LoginScreen';
+import SentenceStart from "../screens/SentenceStart";
+import SentenceInput from "../screens/SentenceInput";
+import SentenceWait from "../screens/SentenceWait";
+import SentenceEnd from "../screens/SentenceEnd";
 
 const CostumDrawerComponent = (props) => (
   <View>
@@ -29,6 +33,10 @@ export default AppDrawerNavigator = createDrawerNavigator({
   CreateRoom: CreateRoomScreen,
   JoinRoom: JoinRoomScreen,
   Login: LoginScreen,
+  SentenceGame: SentenceStart,
+  SentenceInput: SentenceInput,
+  SentenceWait: SentenceWait,
+  SentenceEnd: SentenceEnd,
 }, {
   contentComponent: CostumDrawerComponent,
   contentOptions: {
