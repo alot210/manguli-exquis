@@ -1,22 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Container, Content, Form, Label, Input, Item, Button, Text } from 'native-base';
-import * as firebase from 'firebase';
+import firebase from '../constants/FirebaseConfig';
 
 import HeaderBar from "../components/HeaderBar";
 import Colors from "../constants/Colors";
-
-// Initialize Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyAYyXg8VkGWkRnUPwfLRP89BFYnrYri4bA",
-    authDomain: "manguli-exquis.firebaseapp.com",
-    databaseURL: "https://manguli-exquis.firebaseio.com",
-    storageBucket: "manguli-exquis.appspot.com"
-};
-firebase.initializeApp(firebaseConfig);
-
-// Get a reference to the database service
-let database = firebase.database();
 
 
 export default class LoginScreen extends React.Component {
@@ -125,7 +113,7 @@ export default class LoginScreen extends React.Component {
 
             data.forEach(function (item) {
                 console.log("array: "+item);
-            })
+            });
             console.log(data);
         });
 
