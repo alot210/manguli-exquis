@@ -13,9 +13,9 @@ export default class JoinRoomScreen extends React.Component {
             user_id: 1}
     }
 
-  /*static navigationOptions = {
+  static navigationOptions = {
     drawerLabel: () => null
-  };*/
+  };
 
     enterRoom() {
         let _link = this.state.link;

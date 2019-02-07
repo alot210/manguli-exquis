@@ -29,6 +29,8 @@ const CostumDrawerComponent = (props) => (
 
 const AppDrawer = createDrawerNavigator({
   Lobby: StartScreen,
+  CreateRoom: CreateRoomScreen,
+  JoinRoom: JoinRoomScreen,
   Dashboard: DashboardScreen,
   Tutorial: TutorialScreen,
   Credits: CreditScreen,

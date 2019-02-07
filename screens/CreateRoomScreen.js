@@ -15,9 +15,9 @@ export default class CreateRoomScreen extends React.Component {
     }
 
 
-  /*static navigationOptions = {
+  static navigationOptions = {
     drawerLabel: () => null
-  };*/
+  };
 
   createRoom(_that) {
     let _roomID = 1;
