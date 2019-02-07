@@ -1,5 +1,6 @@
 import React from 'react';
 import HeaderBar from "../components/HeaderBar";
+import firebase from '../constants/FirebaseConfig';
 
 export default class CreateRoomScreen extends React.Component {
   static navigationOptions = {
@@ -10,8 +11,13 @@ export default class CreateRoomScreen extends React.Component {
     let _roomID = 1;
     let _passwort = "Passwort";
     let _name = "Name";
-    let _link = "crypt";
+    let _link = "";
     let _mode = "word";
+    let possibleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+
+    for(let i = 0; i < 5; i++){
+        _link = _link + possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
+    }
 
     firebase.database().ref('room/' + _roomID).set({
         roomID: _roomID,
@@ -19,30 +25,6 @@ export default class CreateRoomScreen extends React.Component {
         name: _name,
         link: _link,
         mode: _mode
-    });
-  }
-
-  enterRoom() {
-    let _link = "crypt";
-    let data = [];
-    let found = false;
-    let allRooms = firebase.database().ref('room/');
-    allRooms.once('value', function (snapshot) {
-        snapshot.foreach(function (item) {
-            data.push(item.child("link").val());
-        });
-
-        for (let i = 0; i < data.length; i++){
-          if(data[i] === _link){
-            console.log("Erfolgreich dem Raum beigetreten!");
-            found = true;
-            break;
-          }
-        }
-
-        if(!found){
-          console.log("Es gibt keinen Raum mit diesem Link!");
-        }
     });
   }
 
