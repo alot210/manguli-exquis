@@ -36,15 +36,10 @@ export default class LoginScreen extends React.Component {
                 data.push(item.child("email").val());
                 _userID = item.child("userID").val();
             });
-            //console.log("inner: "+data);
+
             //ID hochzählen für nächsten
             _userID = _userID+1;
 
-            /*console.log(data);
-             console.log(data.length);
-             console.log(data[0]);
-             console.log(_email);
-             console.log("ID"+_userID);*/
             for(let i = 0; i < data.length; i++){
                 if(data[i]===_email){
                     found = true;
@@ -81,8 +76,6 @@ export default class LoginScreen extends React.Component {
             snapshot.forEach(function (item) {
                 data.push(item)
             });
-            //console.log(data[0].child("username").val());
-            //console.log(data[1].child("password").val());
             let logged = false;
             let loggedUser;
             for(let i = 0; i < data.length; i++){
@@ -123,17 +116,6 @@ export default class LoginScreen extends React.Component {
             });
             console.log(data);
         });
-
-
-        /*let username = firebase.database().ref('user/' + 2);
-         username.on('value', function (snapshot) {
-         var user = (snapshot.val().username) || 'Anonymous';
-         console.log("TEST: " + user);
-         });*/
-
-
-
-        /*this.setState(state => ({vorname: user}));*/
     }
 
     render() {
