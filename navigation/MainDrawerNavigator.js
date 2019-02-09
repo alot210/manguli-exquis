@@ -1,5 +1,5 @@
 import React from 'react';
-import { createDrawerNavigator, DrawerItems } from 'react-navigation';
+import { createStackNavigator, createSwitchNavigator, createDrawerNavigator, DrawerItems } from 'react-navigation';
 import { View } from 'react-native';
 import { Title } from 'native-base';
 
@@ -15,6 +15,8 @@ import SentenceStart from "../screens/SentenceStart";
 import SentenceInput from "../screens/SentenceInput";
 import SentenceWait from "../screens/SentenceWait";
 import SentenceEnd from "../screens/SentenceEnd";
+import DashboardScreen from "../screens/DashboardScreen";
+import SettingsScreen from "../screens/SettingsScreen";
 
 const CostumDrawerComponent = (props) => (
   <View>
@@ -25,18 +27,70 @@ const CostumDrawerComponent = (props) => (
   </View>
 );
 
+const AppDrawer = createDrawerNavigator({
+  Lobby: StartScreen,
+  CreateRoom: CreateRoomScreen,
+  JoinRoom: JoinRoomScreen,
+  Dashboard: DashboardScreen,
+  Tutorial: TutorialScreen,
+  Credits: CreditScreen,
+  Settings: SettingsScreen,
+}, {
+  contentComponent: CostumDrawerComponent,
+  contentOptions: {
+    activeTintColor: Colors.secondaryTextColor,
+    activeBackgroundColor: Colors.secondaryColor,
+    inactiveTintColor: Colors.primaryTextColor,
+    itemsContainerStyle: {
+      paddingVertical: 0,
+    }
+  }
+});
+
+const AuthDrawer = createDrawerNavigator({
+  Login: LoginScreen,
+  Home: HomeScreen,
+  Tutorial: TutorialScreen,
+  Credits: CreditScreen,
+}, {
+  contentComponent: CostumDrawerComponent,
+  contentOptions: {
+    activeTintColor: Colors.secondaryTextColor,
+    activeBackgroundColor: Colors.secondaryColor,
+    inactiveTintColor: Colors.primaryTextColor,
+    itemsContainerStyle: {
+      paddingVertical: 0,
+    }
+  }
+});
+
+const loginNavigator = createSwitchNavigator({
+  App: AppDrawer,
+  Auth: AuthDrawer,
+});
+
 export default AppDrawerNavigator = createDrawerNavigator({
   Home: HomeScreen,
   Tutorial: TutorialScreen,
   Credits: CreditScreen,
-  Start: StartScreen,
-  CreateRoom: CreateRoomScreen,
-  JoinRoom: JoinRoomScreen,
-  Login: LoginScreen,
-  SentenceGame: SentenceStart,
-  SentenceInput: SentenceInput,
-  SentenceWait: SentenceWait,
-  SentenceEnd: SentenceEnd,
+  Start: {
+    screen: loginNavigator,
+    navigationOptions: {
+      drawerLabel: () => null,
+      drawerLockMode: 'locked-closed',
+    }
+  },
+  //Start: StartScreen,
+  //Settings: SettingsScreen,
+  //Dashboard: DashboardScreen,
+  //CreateRoom: CreateRoomScreen,
+  //JoinRoom: JoinRoomScreen,
+  //Login: LoginScreen,
+  //SentenceGame: SentenceStart,
+  //SentenceInput: SentenceInput,
+  //SentenceWait: SentenceWait,
+  //SentenceEnd: SentenceEnd,
+  //Dashboard: DashboardScreen,
 }, {
   contentComponent: CostumDrawerComponent,
   contentOptions: {

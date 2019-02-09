@@ -10,14 +10,16 @@ import Colors from "../constants/Colors";
 export default class LoginScreen extends React.Component {
     constructor(props){
         super(props);
-        this.state = {  username: "Anonymous",
-            email: "test@test.de",
-            password: "Passwort",
-            user_id: 1}
+        this.state = {
+          username: "Anonymous",
+          email: "test@test.de",
+          password: "Passwort",
+          user_id: 1
+        }
     }
 
     static navigationOptions = {
-        header: null,
+        drawerLabel: () => null
     };
 
     registerUser(){
@@ -53,9 +55,11 @@ export default class LoginScreen extends React.Component {
                     email: _email,
                     password: _password
                 });
-                console.log(_username+" wurde registriert");
+                //console.log(_username+" wurde registriert");
+              alert("Die Registration für "+_username+" wurde abgeschlossen.");
             } else {
-                console.log("Sie sind bereits registriert!!!")
+              //console.log("Sie sind bereits registriert!!!");
+              alert("Sie sind bereits registriert.");
             }
         });
     }
@@ -79,18 +83,21 @@ export default class LoginScreen extends React.Component {
                     data[i].child("password").val() === _password){
                     logged = true;
                     loggedUser = data[i];
-                    console.log(loggedUser);
-                    console.log(loggedUser.child("username").val());
+                    //console.log(loggedUser);
+                    //console.log(loggedUser.child("username").val());
                 }
             }
             if(logged){
-                console.log("Sie wurden angemeldet!");
+                //console.log("Sie wurden angemeldet!");
                 _that.setState(state => ({username: loggedUser.child("username").val(),
                     email: loggedUser.child("email").val(),
                     password: loggedUser.child("password").val(),
                     user_id: loggedUser.child("userID").val()}));
+                _that.setState({isLoggedIn: true});
+                _that.props.navigation.navigate("Dashboard");
             } else {
-                console.log("Mail oder Passwort sind falsch!");
+                //console.log("Mail oder Passwort sind falsch!");
+                alert("Mail oder Passwort sind falsch.");
             }
 
         });
