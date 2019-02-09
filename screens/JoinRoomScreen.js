@@ -10,26 +10,35 @@ export default class JoinRoomScreen extends React.Component {
         super(props);
         this.state = {
             link: "Link hier einfügen",
-            user_id: 1}
+            user_id: 2}
     }
 
   static navigationOptions = {
     drawerLabel: () => null
   };
 
-    enterRoom() {
+    enterRoom(_that) {
         let _link = this.state.link;
+        let _userID = this.state.user_id;
+        let _roomID;
         let data = [];
         let found = false;
+
         let allRooms = firebase.database().ref('room/');
         allRooms.once('value', function (snapshot) {
             snapshot.forEach(function (item) {
-                data.push(item.child("link").val());
+                data.push(item);
             });
 
             for (let i = 0; i < data.length; i++){
-                if(data[i] === _link){
-                    console.log("Erfolgreich dem Raum beigetreten!");
+                _roomID = data[i].child("roomID").val();
+                if(data[i].child("link").val() === _link){
+                    firebase.database().ref('roomContent/' + _roomID+'|'+ _userID).set({
+                        userID: _userID,
+                        roomID: _roomID,
+                        content: "",
+                        timestamp: ""
+                    });
                     found = true;
                     break;
                 }
@@ -37,6 +46,11 @@ export default class JoinRoomScreen extends React.Component {
 
             if(!found){
                 console.log("Es gibt keinen Raum mit diesem Link!");
+            } else {
+                _that.props.navigation.navigate("Dashboard", {
+                    roomID: _roomID,
+                    userID: _userID
+                });
             }
         });
     }
@@ -54,7 +68,7 @@ export default class JoinRoomScreen extends React.Component {
           </Form>
           <Button
             style={{alignSelf: 'center'}}
-            onPress={() => this.enterRoom()}>
+            onPress={() => this.enterRoom(this)}>
             <Text>Raum beitreten</Text>
           </Button>
         </Content>

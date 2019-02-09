@@ -35,6 +35,7 @@ const AppDrawer = createDrawerNavigator({
   Tutorial: TutorialScreen,
   Credits: CreditScreen,
   Settings: SettingsScreen,
+  GameStart: SentenceStart
 }, {
   contentComponent: CostumDrawerComponent,
   contentOptions: {

@@ -6,21 +6,21 @@ import { Container, Content, Form, Label, Input, Item, Button, Text } from 'nati
 import firebase from '../constants/FirebaseConfig';
 
 export default class CreateRoomScreen extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            name: "Raumname",
-            password: "",
-            user_id: 1}
-    }
-
+  constructor(props){
+      super(props);
+      this.state = {
+          name: "Raumname",
+          password: "",
+          user_id: 1}
+  };
 
   static navigationOptions = {
     drawerLabel: () => null
   };
 
   createRoom(_that) {
-    let _roomID = 1;
+    let _roomID;
+    let _userID = this.state.user_id;
     let _passwort = this.state.password;
     let _name = this.state.name;
     let _link = "";
@@ -44,13 +44,21 @@ export default class CreateRoomScreen extends React.Component {
               passwort: _passwort,
               name: _name,
               link: _link,
+              creator: _userID
+          });
+
+          firebase.database().ref('roomContent/' + _roomID+'|'+ _userID).set({
+              userID: _userID,
+              roomID: _roomID,
+              content: "",
+              timestamp: ""
           });
 
           Alert.alert(
               "Ihr Raum wurde erstellt",
               "Der Link zu Ihrem Raum lautet: " + _link,
               [
-                  {text: "OK", onPress: () => ""},
+                  {text: "OK", onPress: () => _that.props.navigation.navigate("Dashboard")},
               ],
               {cancelable: false},
           );
@@ -58,6 +66,7 @@ export default class CreateRoomScreen extends React.Component {
   }
 
   render() {
+    this.state.user_id = this.props.navigation.getParam('userID', 0);
     return (
       <Container>
           <HeaderBar {...this.props} title='Raum Erstellung' />
