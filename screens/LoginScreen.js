@@ -94,7 +94,9 @@ export default class LoginScreen extends React.Component {
                     password: loggedUser.child("password").val(),
                     user_id: loggedUser.child("userID").val()}));
                 _that.setState({isLoggedIn: true});
-                _that.props.navigation.navigate("Dashboard");
+                _that.props.navigation.navigate("Lobby", {
+                    userID: loggedUser.child("userID").val()
+                });
             } else {
                 //console.log("Mail oder Passwort sind falsch!");
                 alert("Mail oder Passwort sind falsch.");

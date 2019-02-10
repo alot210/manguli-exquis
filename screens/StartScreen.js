@@ -12,6 +12,7 @@ export default class StartScreen extends React.Component {
   // };
 
   render() {
+      let _userId = this.props.navigation.getParam('userID', 0);
       return (
           <Container>
             <HeaderBar {...this.props} title='Lobby'/>
@@ -22,15 +23,15 @@ export default class StartScreen extends React.Component {
                 alignSelf: 'center',
                 marginBottom: 10,
                 width: 100
-              }} onPress={ () => this.props.navigation.navigate('CreateRoom')}>
-                <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Erstellen</Text>
+              }} onPress={ () => this.props.navigation.navigate('CreateRoom', {userID: _userId})}>
+              <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Erstellen</Text>
               </Button>
               <Button primary style={{
                 backgroundColor: Colors.secondaryColor                                                                                                 ,
                 alignSelf: 'center',
                 marginBottom: 10,
                 width: 100
-              }} onPress={ () => this.props.navigation.navigate('JoinRoom')}>
+              }} onPress={ () => this.props.navigation.navigate('JoinRoom', {userID: _userId})}>
                 <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Beitreten</Text>
               </Button>
             </SafeAreaView>
