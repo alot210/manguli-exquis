@@ -7,7 +7,7 @@ import Colors from "../constants/Colors";
 export default class HeaderBar extends React.Component {
   render() {
     let userIcon;
-    if(this.props.navigation.getParam('userID') !== undefined) {
+    if(this.props.navigation.getParam('userID') !== undefined || this.props.userID !== undefined) {
       userIcon = <Icon style={{color: Colors.primaryTextColor}} name="contact"
             onPress={() => this.props.navigation.navigate('Settings')}/>;
     }
