@@ -14,7 +14,9 @@ export default class LoginScreen extends React.Component {
           username: "Anonymous",
           email: "test@test.de",
           password: "Passwort",
-          user_id: 1
+          user_id: 1,
+          login: false,
+          register: false,
         }
     }
 
@@ -121,60 +123,140 @@ export default class LoginScreen extends React.Component {
     }
 
     render() {
+      const Register = () => (
+        <View>
+        <Form style={{marginTop: 64}}>
+          <Item floatingLabel>
+            <Label>Username</Label>
+            <Input value={this.state.username} onChangeText={(username) => this.setState({username})} />
+          </Item>
+          <Item floatingLabel>
+            <Label>E-Mail</Label>
+            <Input value={this.state.email} onChangeText={(email) => this.setState({email})} />
+          </Item>
+          <Item floatingLabel last>
+            <Label>Password</Label>
+            <Input value={this.state.password} onChangeText={(password) => this.setState({password})} />
+          </Item>
+        </Form>
+
+        <View style={{marginTop: 64}}>
+          <Button
+            style={{
+              backgroundColor: Colors.secondaryColor,
+              alignSelf: 'center',
+              marginBottom: 10,
+              width: 150
+            }}
+            onPress={() => this.registerUser()}>
+            <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Registrieren</Text>
+          </Button>
+          <Button
+            style={{
+              backgroundColor: Colors.secondaryColor,
+              alignSelf: 'center',
+              marginBottom: 10,
+              width: 150
+            }}
+            onPress={()=> this.setState({register: false})}
+          >
+            <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Zurück</Text>
+          </Button>
+        </View>
+        </View>
+      );
+
+      const Login = () => (
+        <View>
+          <Form style={{marginTop: 64}}>
+            <Item floatingLabel>
+              <Label>E-Mail</Label>
+              <Input value={this.state.email} onChangeText={(email) => this.setState({email})} />
+            </Item>
+            <Item floatingLabel last>
+              <Label>Password</Label>
+              <Input value={this.state.password} onChangeText={(password) => this.setState({password})} />
+            </Item>
+          </Form>
+          <View>
+            <Button
+              style={{
+                backgroundColor: Colors.secondaryColor,
+                alignSelf: 'center',
+                marginBottom: 10,
+                width: 150
+              }}
+              onPress={()=>this.loginUser(this)}
+            >
+              <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Anmelden</Text>
+            </Button>
+            <Button
+              style={{
+                backgroundColor: Colors.secondaryColor,
+                alignSelf: 'center',
+                marginBottom: 10,
+                width: 150
+              }}
+              onPress={()=> this.setState({login: false})}
+            >
+              <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Zurück</Text>
+            </Button>
+          </View>
+        </View>
+      );
+
+      const DefaultLayout = () => (
+        <View>
+          <Button
+            style={{
+              backgroundColor: Colors.secondaryColor,
+              alignSelf: 'center',
+              marginBottom: 10,
+              width: 150
+            }}
+            onPress={()=> this.setState({register: true})}
+          >
+            <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Registrieren</Text>
+          </Button>
+
+          <Button
+            style={{
+              backgroundColor: Colors.secondaryColor,
+              alignSelf: 'center',
+              marginBottom: 10,
+              width: 150
+            }}
+            onPress={()=> this.setState({login: true})}
+          >
+            <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Anmelden</Text>
+          </Button>
+        </View>
+      );
+
+      let userForm;
+      if(this.state.login)
+        userForm = <Login/>;
+      else if(this.state.register)
+        userForm = <Register/>;
+        else
+          userForm = <DefaultLayout/>;
+
         return (
           <Container>
             <HeaderBar {...this.props} title='Login' />
             <Content>
-              <Form style={{marginTop: 64}}>
-                <Item floatingLabel>
-                  <Label>Username</Label>
-                  <Input value={this.state.username} onChangeText={(username) => this.setState({username})} />
-                </Item>
-                <Item floatingLabel>
-                  <Label>E-Mail</Label>
-                  <Input value={this.state.email} onChangeText={(email) => this.setState({email})} />
-                </Item>
-                <Item floatingLabel last>
-                  <Label>Password</Label>
-                  <Input value={this.state.password} onChangeText={(password) => this.setState({password})} />
-                </Item>
-              </Form>
-
-              <View style={{marginTop: 64}}>
-                <Button
-                  style={{
-                    backgroundColor: Colors.secondaryColor,
-                    alignSelf: 'center',
-                    marginBottom: 10,
-                    width: 150
-                  }}
-                  onPress={() => this.registerUser()}>
-                  <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Hinzufügen</Text>
-                </Button>
-                <Button
-                  style={{
-                    backgroundColor: Colors.secondaryColor,
-                    alignSelf: 'center',
-                    marginBottom: 10,
-                    width: 150
-                  }}
-                  onPress={()=>this.loginUser(this)}
-                >
-                  <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Anmelden</Text>
-                </Button>
-
-                <Button
-                  style={{
-                    backgroundColor: Colors.secondaryColor,
-                    alignSelf: 'center',
-                    marginBottom: 10,
-                    width: 150
-                  }}
-                  onPress={()=>this.getUserData()}
-                >
-                  <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Auslesen Test</Text>
-                </Button>
-              </View>
+              {userForm}
+                {/*<Button*/}
+                  {/*style={{*/}
+                    {/*backgroundColor: Colors.secondaryColor,*/}
+                    {/*alignSelf: 'center',*/}
+                    {/*marginBottom: 10,*/}
+                    {/*width: 150*/}
+                  {/*}}*/}
+                  {/*onPress={()=>this.getUserData()}*/}
+                {/*>*/}
+                  {/*<Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Auslesen Test</Text>*/}
+                {/*</Button>*/}
             </Content>
           </Container>
         );
