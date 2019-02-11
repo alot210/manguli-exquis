@@ -28,7 +28,7 @@ export default class DashboardScreen extends React.Component {
             }
           });
           //this.state.number_of_players = data.length;
-          console.log("Spieler im Raum "+ _that.state.room_id +": "+data.length);
+          //console.log("Spieler im Raum "+ _that.state.room_id +": "+data.length);
           _that.setState({number_of_players: data.length});
       });
   }
@@ -37,9 +37,13 @@ export default class DashboardScreen extends React.Component {
     //Drawer Label ist null, damit es im DrawerMenü nicht angezeigt wird
     drawerLabel: () => null
   };
-  render() {
-    this.state.room_id = this.props.navigation.getParam('roomID', 0);
+
+  componentWillMount() {
+    this.setState({room_id: this.props.navigation.getParam('roomID', 0)});
     this.testfunction(this);
+  }
+
+  render() {
     return (
       <Container>
         <HeaderBar {...this.props} title='Dashboard'/>

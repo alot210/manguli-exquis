@@ -11,7 +11,8 @@ export default class CreateRoomScreen extends React.Component {
       this.state = {
           name: "Raumname",
           password: "",
-          user_id: 1}
+          //user_id: 1
+      }
   };
 
   static navigationOptions = {
