@@ -178,7 +178,7 @@ export default class LoginScreen extends React.Component {
               <Input value={this.state.password} onChangeText={(password) => this.setState({password})} />
             </Item>
           </Form>
-          <View>
+          <View style={{marginTop: 64}}>
             <Button
               style={{
                 backgroundColor: Colors.secondaryColor,
@@ -206,7 +206,7 @@ export default class LoginScreen extends React.Component {
       );
 
       const DefaultLayout = () => (
-        <View>
+        <View style={{flex: 1, justifyContent: 'center'}}>
           <Button
             style={{
               backgroundColor: Colors.secondaryColor,
@@ -244,20 +244,7 @@ export default class LoginScreen extends React.Component {
         return (
           <Container>
             <HeaderBar {...this.props} title='Login' />
-            <Content>
               {userForm}
-                {/*<Button*/}
-                  {/*style={{*/}
-                    {/*backgroundColor: Colors.secondaryColor,*/}
-                    {/*alignSelf: 'center',*/}
-                    {/*marginBottom: 10,*/}
-                    {/*width: 150*/}
-                  {/*}}*/}
-                  {/*onPress={()=>this.getUserData()}*/}
-                {/*>*/}
-                  {/*<Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Auslesen Test</Text>*/}
-                {/*</Button>*/}
-            </Content>
           </Container>
         );
     }
