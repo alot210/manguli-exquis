@@ -124,6 +124,8 @@ export default class LoginScreen extends React.Component {
 
     render() {
       const Register = () => (
+        <Container>
+          <HeaderBar {...this.props} title='Login' />
         <View>
         <Form style={{marginTop: 64}}>
           <Item floatingLabel>
@@ -164,9 +166,12 @@ export default class LoginScreen extends React.Component {
           </Button>
         </View>
         </View>
+        </Container>
       );
 
       const Login = () => (
+        <Container>
+          <HeaderBar {...this.props} title='Login' />
         <View>
           <Form style={{marginTop: 64}}>
             <Item floatingLabel>
@@ -203,9 +208,12 @@ export default class LoginScreen extends React.Component {
             </Button>
           </View>
         </View>
+        </Container>
       );
 
       const DefaultLayout = () => (
+        <Container>
+          <HeaderBar {...this.props} title='Login' />
         <View style={{flex: 1, justifyContent: 'center'}}>
           <Button
             style={{
@@ -231,21 +239,14 @@ export default class LoginScreen extends React.Component {
             <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Anmelden</Text>
           </Button>
         </View>
+        </Container>
       );
 
-      let userForm;
       if(this.state.login)
-        userForm = <Login/>;
+        return Login();
       else if(this.state.register)
-        userForm = <Register/>;
-        else
-          userForm = <DefaultLayout/>;
-
-        return (
-          <Container>
-            <HeaderBar {...this.props} title='Login' />
-              {userForm}
-          </Container>
-        );
+        return Register();
+      else
+        return DefaultLayout();
     }
 }
