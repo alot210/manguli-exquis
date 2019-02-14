@@ -22,6 +22,7 @@ export default class JoinRoomScreen extends React.Component {
         let _link = this.state.link;
         let _userID = this.state.user_id;
         let _roomID;
+        let _creatorID;
         let data = [];
         let found = false;
 
@@ -40,6 +41,7 @@ export default class JoinRoomScreen extends React.Component {
                         content: "",
                         timestamp: ""
                     });
+                    _creatorID = data[i].child("creator").val();
                     found = true;
                     break;
                 }
@@ -50,7 +52,8 @@ export default class JoinRoomScreen extends React.Component {
             } else {
                 _that.props.navigation.navigate("Dashboard", {
                     roomID: _roomID,
-                    userID: _userID
+                    userID: _userID,
+                  creatorID: _creatorID,
                 });
             }
         });

@@ -44,38 +44,55 @@ export default class DashboardScreen extends React.Component {
   }
 
   render() {
-    return (
+
+    const CreatorScreen = () => (
       <Container>
         <HeaderBar {...this.props} title='Dashboard'/>
         <Input value={this.state.number_of_players+" "}  />
         <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
           <Text style={{alignSelf: 'center', paddingBottom: 32}}>Spielmodus auswählen</Text>
           <Button primary style={{
-              backgroundColor: Colors.secondaryColor,
-              alignSelf: 'center',
-              marginBottom: 10,
-              width: 100
-              }} onPress={ () => this.props.navigation.navigate('GameStart')}>
+            backgroundColor: Colors.secondaryColor,
+            alignSelf: 'center',
+            marginBottom: 10,
+            width: 100
+          }} onPress={ () => this.props.navigation.navigate('GameStart')}>
             <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Satz bilden</Text>
           </Button>
           <Button primary style={{
-              backgroundColor: Colors.secondaryColor,
-              alignSelf: 'center',
-              marginBottom: 10,
-              width: 100
-              }} onPress={ () => this.props.navigation.navigate('GameStart')}>
-          <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Reime bilden</Text>
+            backgroundColor: Colors.secondaryColor,
+            alignSelf: 'center',
+            marginBottom: 10,
+            width: 100
+          }} onPress={ () => this.props.navigation.navigate('GameStart')}>
+            <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Reime bilden</Text>
           </Button>
           <Button primary style={{
-              backgroundColor: Colors.secondaryColor                                                                                                 ,
-              alignSelf: 'center',
-              marginBottom: 10,
-              width: 100
-              }} onPress={ () => this.props.navigation.navigate('GameStart')}>
-          <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Texte schreiben</Text>
+            backgroundColor: Colors.secondaryColor                                                                                                 ,
+            alignSelf: 'center',
+            marginBottom: 10,
+            width: 100
+          }} onPress={ () => this.props.navigation.navigate('GameStart')}>
+            <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Texte schreiben</Text>
           </Button>
-      </SafeAreaView>
+        </SafeAreaView>
       </Container>
-    )
+
+    );
+
+    const JoinerScreen = () => (
+      <Container>
+        <HeaderBar {...this.props} title='Dashboard'/>
+        <Input value={this.state.number_of_players+" "}  />
+        <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
+          <Text style={{alignSelf: 'center'}}>Warte bis der Spielleiter ein Spiel ausgesucht hat.</Text>
+        </SafeAreaView>
+      </Container>
+    );
+
+    if(this.props.navigation.getParam("creatorID") === this.props.navigation.getParam("userID"))
+      return CreatorScreen();
+    else
+      return JoinerScreen();
   }
 }
