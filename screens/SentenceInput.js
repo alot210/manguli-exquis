@@ -12,7 +12,7 @@ export default class SentenceInput extends React.Component {
   };*/
     constructor(props){
         super(props);
-        this.state = {  word: "Wort"}
+        this.state = {  word: ""}
     }
 
   addSentence() {
