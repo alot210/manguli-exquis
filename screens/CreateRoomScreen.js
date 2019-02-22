@@ -61,7 +61,7 @@ export default class CreateRoomScreen extends React.Component {
               "Ihr Raum wurde erstellt",
               "Der Link zu Ihrem Raum lautet:\n" + _link + "\nDer Link wurde in die Zwischenablage kopiert!",
               [
-                  {text: "OK", onPress: () => _that.props.navigation.navigate("Dashboard", {creatorID: _userID, userID: _userID})},
+                  {text: "OK", onPress: () => _that.props.navigation.navigate("Dashboard", {creatorID: _userID, userID: _userID, roomID: _roomID})},
               ],
               {cancelable: false},
           );
