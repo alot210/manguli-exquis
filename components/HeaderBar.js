@@ -9,7 +9,7 @@ export default class HeaderBar extends React.Component {
     let userIcon;
     if(this.props.navigation.getParam('userID') !== undefined || this.props.userID !== undefined) {
       userIcon = <Icon style={{color: Colors.primaryTextColor}} name="contact"
-            onPress={() => this.props.navigation.navigate('Settings')}/>;
+            onPress={() => this.props.navigation.navigate('Settings',{user_id: this.props.navigation.getParam('userID')})}/>;
     }
     else
       userIcon = null;
