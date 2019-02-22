@@ -43,6 +43,7 @@ export default class DashboardScreen extends React.Component {
         this.props.navigation.navigate('GameStart', {
           room_id: this.state.room_id,
           user_id: this.props.navigation.getParam('userID'),
+          number_of_players: this.state.number_of_players,
         });
 
     });

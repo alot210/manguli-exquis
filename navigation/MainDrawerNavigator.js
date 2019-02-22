@@ -39,7 +39,8 @@ const AppDrawer = createDrawerNavigator({
     screen: (props) => <CreditScreen {...props} userID={0}/>,
   },
   Settings: SettingsScreen,
-  GameStart: SentenceStart
+  GameStart: SentenceStart,
+  GameInput: SentenceInput,
 }, {
   contentComponent: CostumDrawerComponent,
   contentOptions: {
