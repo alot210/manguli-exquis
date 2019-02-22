@@ -9,7 +9,7 @@ export default class JoinRoomScreen extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            link: "Link hier einfügen",
+            link: "",
             user_id: this.props.navigation.getParam('userID', 0),
         }
     }
