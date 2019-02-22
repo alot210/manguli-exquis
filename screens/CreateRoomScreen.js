@@ -1,7 +1,7 @@
 import React from 'react';
 import HeaderBar from "../components/HeaderBar";
 import Colors from "../constants/Colors";
-import { View, Alert } from 'react-native';
+import { View, Alert, Clipboard } from 'react-native';
 import { Container, Content, Form, Label, Input, Item, Button, Text } from 'native-base';
 import firebase from '../constants/FirebaseConfig';
 
@@ -9,7 +9,7 @@ export default class CreateRoomScreen extends React.Component {
   constructor(props){
       super(props);
       this.state = {
-          name: "Raumname",
+          name: "",
           password: "",
           //user_id: 1
       }
@@ -55,11 +55,13 @@ export default class CreateRoomScreen extends React.Component {
               timestamp: ""
           });
 
+          Clipboard.setString(_link);
+
           Alert.alert(
               "Ihr Raum wurde erstellt",
-              "Der Link zu Ihrem Raum lautet: " + _link,
+              "Der Link zu Ihrem Raum lautet:\n" + _link + "\nDer Link wurde in die Zwischenablage kopiert!",
               [
-                  {text: "OK", onPress: () => _that.props.navigation.navigate("Dashboard", {creatorID: _userID})},
+                  {text: "OK", onPress: () => _that.props.navigation.navigate("Dashboard", {creatorID: _userID, userID: _userID})},
               ],
               {cancelable: false},
           );
@@ -74,7 +76,7 @@ export default class CreateRoomScreen extends React.Component {
           <Content>
               <Form style={{marginTop: 64}}>
                   <Item floatingLabel>
-                      <Label>Username</Label>
+                      <Label>Raumname</Label>
                       <Input value={this.state.name} onChangeText={(name) => this.setState({name})} />
                   </Item>
                   <Item floatingLabel last>
