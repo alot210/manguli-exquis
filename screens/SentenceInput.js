@@ -16,6 +16,7 @@ export default class SentenceInput extends React.Component {
         word: "",
         wordtype: 'test',
         playerHasToWait: false,
+        playerSequence: [],
       };
 
       this.roomMemberRef = firebase.database().ref('roomContent/');
@@ -49,35 +50,36 @@ export default class SentenceInput extends React.Component {
       });
 
       this.setState({playerHasToWait: true});
-
-
-
-      this.currentRoomRef.once('value', (snapshot) => {
-        this.currentRoomRef.update({playerSubmitedValue: snapshot.child('playerSubmitedValue').val() + 1});
-      })
-
-    this.currentRoomRef.on('value', (snapshot) => {
-      if(snapshot.child('playerSubmitedValue').val() === 2)
-        this.props.navigation.navigate('GameEnd', {playerSequence: 'playerSequnce'});
-    });
-
-    // this.currentRoomRef.once('value', (snapshot) => {
-      //   this.currentRoomRef.update({playerSubmitValue: snapshot.child('playerSubmitValue').val() + 1});
-      // });
-      //
-      // if(this.playerSubmitValue === 2) {
-      //   this.props.navigation.navigate('GameEnd', {playerSequence: 'playerSequence'});
-      // }
+      this.props.navigation.navigate('GameWait', {playerSequence: this.state.playerSequence, room_id: _roomID});
   }
 
   componentWillMount() {
     let playerSequence = [];
-
     this.roomMemberRef.once('value', (snapshot) => {
       snapshot.forEach((item) => {
         if(item.child('roomID').val() === this.props.navigation.getParam('room_id'))
           playerSequence.push(item.child('userID').val());
       });
+
+      for(let i = 0; i < 2; i++) {
+        playerSequence.forEach((item, index) => {
+          if(this.props.navigation.getParam('user_id') === item) {
+            if(i === index)
+              switch (i) {
+                case 0:
+                  this.setState({wordtype: 'Subjekt'});
+                  break;
+                case 1:
+                  this.setState({wordtype: 'Prädikat'});
+                  break;
+                default:
+                  this.setState({wordtype: 'dummy'});
+                  break;
+              }
+          }
+        });
+        this.setState({playerSequence: playerSequence});
+      }
     });
 
     // this.currentRoomRef.once('value', (snapshot) => {
@@ -90,91 +92,31 @@ export default class SentenceInput extends React.Component {
     // }
 
     //console.log(this.props.navigation.getParam('user_id') + '  ' + playerSequence);
-
-    for(let i = 0; i < 2; i++) {
-      playerSequence.forEach((item, index) => {
-        if(this.props.navigation.getParam('user_id') === item) {
-          if(i === index)
-            switch (i) {
-              case 0:
-                this.setState({wordtype: 'Subjekt'});
-                break;
-              case 1:
-                this.setState({wordtype: 'Prädikat'});
-                break;
-              default:
-                this.setState({wordtype: 'dummy'});
-                break;
-            }
-        }
-      });
-    }
-
-
-    // //for(let i = 0; i < 2; i++) {
-    // for(let i = 0; i < 1; i++) {
-    //   for(let j = 0; j < playerSequence.length; j++) {
-    //     console.log('UserID: '+this.props.navigation.getParam('user_id')+' Wortart: ' + i + ' Position: ' + j + ' Spieler an Position: '+ playerSequence[j]);
-    //     if(this.props.navigation.getParam('user_id') === playerSequence[j]) {
-    //       console.log('J: ' + j + ' I: ' + i);
-    //       if(j === i) {
-    //         switch (i) {
-    //           case 0:
-    //             this.setState({wordtype: 'Subjekt'});
-    //             break;
-    //           case 1:
-    //             this.setState({wordtype: 'Prädikat'});
-    //             break;
-    //           // case 2:
-    //           //   this.setState({wordtype: 'Objekt'});
-    //           //   break;
-    //           default:
-    //             this.setState({wordtype: 'dummy'});
-    //             break;
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
   };
 
   render() {
-
-    const PlayerInput = () => (
-      <View style={{flex: 1, justifyContent: 'center', marginTop: 64}}>
-        <View>
-          <Text style={{}}>Bitte ein {this.state.wordtype} eingeben.</Text>
-          <Text style={{alignSelf: 'center', paddingBottom: 32}}>Satzbau</Text>
-          <Form style={{alignSelf: 'center', width: 132}}>
-            <Item floatingLabel>
-              <Label>Wort</Label>
-              <Input value={this.state.word} onChangeText={(word) => this.setState({word})} />
-            </Item>
-          </Form>
-        </View>
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <Button
-            style={{alignSelf: 'center'}}
-            onPress={() => this.addSentence()}>
-            <Text>Abschicken</Text>
-          </Button>
-        </View>
-      </View>
-    );
-
-    const PlayerWait = () => (
-      <View style={{flex: 1, justifyContent: 'center', marginTop: 64}}>
-        <Text style={{alignSelf: 'center', paddingBottom: 32}}>Satzbau</Text>
-        <Text style={{alignSelf: 'center', paddingLeft: 16, paddingRight: 16}}>
-          Warte bis die anderen Fertig sind...
-        </Text>
-      </View>
-    );
-
     return (
       <Container>
         <HeaderBar {...this.props} title='Satzbau'/>
-        {this.state.playerHasToWait ? PlayerWait() : PlayerInput()}
+        <View style={{flex: 1, justifyContent: 'center', marginTop: 64}}>
+          <View>
+            <Text style={{}}>Bitte ein {this.state.wordtype} eingeben.</Text>
+            <Text style={{alignSelf: 'center', paddingBottom: 32}}>Satzbau</Text>
+            <Form style={{alignSelf: 'center', width: 132}}>
+              <Item floatingLabel>
+                <Label>Wort</Label>
+                <Input value={this.state.word} onChangeText={(word) => this.setState({word})} />
+              </Item>
+            </Form>
+          </View>
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <Button
+              style={{alignSelf: 'center'}}
+              onPress={() => this.addSentence()}>
+              <Text>Abschicken</Text>
+            </Button>
+          </View>
+        </View>
       </Container>
     )
   }
