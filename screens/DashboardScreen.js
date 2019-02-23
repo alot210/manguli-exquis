@@ -16,7 +16,10 @@ export default class DashboardScreen extends React.Component {
       user_id: -1,
       room_id: -1,
       gameMode: -1,
+      room_name: 'null',
     }
+
+    this.currentRoomRef = firebase.database().ref().child('room/'+this.props.navigation.getParam('roomID'));
   }
 
   testfunction(_that) {
@@ -51,10 +54,15 @@ export default class DashboardScreen extends React.Component {
 
   static navigationOptions = {
     //Drawer Label ist null, damit es im DrawerMenü nicht angezeigt wird
-    drawerLabel: () => null
+    drawerLabel: () => null,
   };
 
   componentWillMount() {
+
+    this.currentRoomRef.once('value', (snapshot) => {
+      this.setState({room_name: snapshot.child('name').val()});
+    });
+
     //Call testfunction after change state completed for displaying right amount of room members
     this.setState({room_id: this.props.navigation.getParam('roomID', 0)}, () => {
       this.testfunction(this);
@@ -68,6 +76,7 @@ export default class DashboardScreen extends React.Component {
       <Container>
         <HeaderBar {...this.props} title='Dashboard'/>
         <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
+          <Text style={{}}>{this.state.room_name}</Text>
           <Text style={{alignSelf: 'center', paddingBottom: 32, paddingLeft: 16, paddingRight: 16}}>
             Es befinden sich momentan {this.state.number_of_players} Spieler in der Lobby.
           </Text>
@@ -109,6 +118,7 @@ export default class DashboardScreen extends React.Component {
       <Container>
         <HeaderBar {...this.props} title='Dashboard'/>
         <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
+          <Text style={{}}>{this.state.room_name}</Text>
           <Text style={{alignSelf: 'center', paddingBottom: 32, paddingLeft: 16, paddingRight: 16}}>
             Es befinden sich momentan {this.state.number_of_players} Spieler in der Lobby.
           </Text>
