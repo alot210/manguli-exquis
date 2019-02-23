@@ -17,6 +17,7 @@ export default class LoginScreen extends React.Component {
           user_id: 1,
           login: false,
           register: false,
+          is_logged_in: false,
         }
     }
 
@@ -24,7 +25,7 @@ export default class LoginScreen extends React.Component {
         drawerLabel: () => null
     };
 
-    registerUser(){
+    registerUser(_that){
         let _userID = 1;
         let _username = this.state.username;
         let _email = this.state.email;
@@ -43,7 +44,7 @@ export default class LoginScreen extends React.Component {
             _userID = _userID+1;
 
             for(let i = 0; i < data.length; i++){
-                if(data[i]===_email){
+                if(data[i]===_email || _password === "" || _email === ""){
                     found = true;
                     break;
                 } else {
@@ -55,13 +56,21 @@ export default class LoginScreen extends React.Component {
                     userID: _userID,
                     username: _username,
                     email: _email,
-                    password: _password
+                    password: _password,
+                    islogged: true
                 });
                 //console.log(_username+" wurde registriert");
               alert("Die Registration für "+_username+" wurde abgeschlossen.");
+
+                _that.props.navigation.navigate("Lobby", {
+                    userID: _userID
+                });
             } else {
-              //console.log("Sie sind bereits registriert!!!");
-              alert("Sie sind bereits registriert.");
+                if(_password === "" || _email === ""){
+                  alert("Passwort oder Mail fehlen!");
+                } else {
+                  alert("Sie sind bereits registriert.");
+                }
             }
         });
     }
@@ -82,7 +91,8 @@ export default class LoginScreen extends React.Component {
             let loggedUser;
             for(let i = 0; i < data.length; i++){
                 if(data[i].child("email").val() === _email &&
-                    data[i].child("password").val() === _password){
+                    data[i].child("password").val() === _password &&
+                    data[i].child("islogged").val() === false){
                     logged = true;
                     loggedUser = data[i];
                     //console.log(loggedUser);
@@ -94,8 +104,12 @@ export default class LoginScreen extends React.Component {
                 _that.setState(state => ({username: loggedUser.child("username").val(),
                     email: loggedUser.child("email").val(),
                     password: loggedUser.child("password").val(),
-                    user_id: loggedUser.child("userID").val()}));
-                _that.setState({isLoggedIn: true});
+                    user_id: loggedUser.child("userID").val(),
+                    is_logged_in: true}));
+                firebase.database().ref('user/' + _that.state.user_id).update({
+                    islogged: true
+                });
+
                 _that.props.navigation.navigate("Lobby", {
                     userID: loggedUser.child("userID").val()
                 });
@@ -104,21 +118,6 @@ export default class LoginScreen extends React.Component {
                 alert("Mail oder Passwort sind falsch.");
             }
 
-        });
-    }
-
-    getUserData(){
-        let alluser = firebase.database().ref('user/');
-        alluser.on('value', function (snapshot) {
-            let data = [];
-            snapshot.forEach(function (item) {
-                data.push(item.child("email").val());
-            });
-
-            data.forEach(function (item) {
-                console.log("array: "+item);
-            });
-            console.log(data);
         });
     }
 
@@ -150,7 +149,7 @@ export default class LoginScreen extends React.Component {
               marginBottom: 10,
               width: 150
             }}
-            onPress={() => this.registerUser()}>
+            onPress={() => this.registerUser(this)}>
             <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Registrieren</Text>
           </Button>
           <Button

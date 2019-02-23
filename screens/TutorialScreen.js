@@ -19,8 +19,8 @@ export default class TutorialScreen extends React.Component {
                         color: Colors.primaryTextColor,
                         fontSize: 24
                     }}>1. Wähle einen Raum</Text>
-                    <Text style={{alignSelf: 'center', paddingBottom: 20}}>Wähle zunächst einen existierenden Raum oder
-                        erstelle deinen eigenen Raum.</Text>
+                    <Text style={{alignSelf: 'center', paddingBottom: 20}}>
+                        Trete einem Raum bei oder {"\n"}erstelle deinen eigenen</Text>
                     <Image source={require('../assets/images/multiple-users-silhouette.png')}
                            style={{width: 80, height: 80, alignSelf: 'center'}}></Image>
                     <Text style={{
@@ -30,7 +30,8 @@ export default class TutorialScreen extends React.Component {
                         color: Colors.primaryTextColor,
                         fontSize: 24
                     }}>2. Entscheide dich für ein Spiel</Text>
-                    <Text style={{alignSelf: 'center', paddingBottom: 20}}>Du hast die Möglichkeit zwischen diversen
+                    <Text style={{alignSelf: 'center', paddingBottom: 20}}>
+                        Du hast die Möglichkeit zwischen diversen {"\n"}
                         Minispielen zu wählen.</Text>
 
                     <Image source={require('../assets/images/scrabble.png')}
@@ -50,10 +51,9 @@ export default class TutorialScreen extends React.Component {
                         color: Colors.primaryTextColor,
                         fontSize: 24
                     }}>3. Beginne das Spiel</Text>
-                    <Text style={{alignSelf: 'center', paddingBottom: 20}}>Mit dem Start-Button beginnst du das Spiel.
-                        Um mehr Informationen über das Spiel zu erhalten benutze den Informations-Button.</Text>
-                    <Image source={require('../assets/images/info.png')}
-                           style={{width: 50, height: 50, alignSelf: 'center', marginBottom: 50}}></Image>
+                    <Text style={{alignSelf: 'center', paddingBottom: 20}}>
+                        Mit dem Start-Button beginnst du das Spiel.{"\n"}
+                        Informationen über das Spiel{"\n"}erhälst du vor Spielbeginn</Text>
                 </ScrollView>
             </Container>
         );

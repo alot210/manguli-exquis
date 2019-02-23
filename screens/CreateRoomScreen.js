@@ -10,7 +10,6 @@ export default class CreateRoomScreen extends React.Component {
       super(props);
       this.state = {
           name: "",
-          password: "",
           //user_id: 1
       }
   };
@@ -22,7 +21,6 @@ export default class CreateRoomScreen extends React.Component {
   createRoom(_that) {
     let _roomID;
     let _userID = this.state.user_id;
-    let _passwort = this.state.password;
     let _name = this.state.name;
     let _link = "";
     let possibleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
@@ -42,7 +40,6 @@ export default class CreateRoomScreen extends React.Component {
 
           firebase.database().ref('room/' + _roomID).set({
               roomID: _roomID,
-              passwort: _passwort,
               name: _name,
               link: _link,
               creator: _userID
@@ -78,10 +75,6 @@ export default class CreateRoomScreen extends React.Component {
                   <Item floatingLabel>
                       <Label>Raumname</Label>
                       <Input value={this.state.name} onChangeText={(name) => this.setState({name})} />
-                  </Item>
-                  <Item floatingLabel last>
-                      <Label>Password</Label>
-                      <Input value={this.state.password} onChangeText={(password) => this.setState({password})} />
                   </Item>
               </Form>
               <Button
