@@ -50,7 +50,7 @@ export default class DashboardScreen extends React.Component {
     currentRoom.on('value', (snapshot) => {
       let gameMode = snapshot.child('gameMode').val();
       //Navigate to GameStartScreen when gameMode is a value of Database
-      if(gameMode !== null)
+      if(gameMode !== "")
         this.props.navigation.navigate('GameStart', {
           room_id: this.state.room_id,
           user_id: this.props.navigation.getParam('userID'),

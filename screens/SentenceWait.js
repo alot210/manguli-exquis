@@ -29,8 +29,9 @@ export default class SentenceWait extends React.Component {
           }
         }
 
-        if(this.props.navigation.getParam('playerSequence').length === this.state.playerSubmitedValue)
-          this.props.navigation.navigate('GameEnd');
+        if(this.props.navigation.getParam('playerSequence').length === this.state.playerSubmitedValue){
+            this.props.navigation.navigate('GameEnd', {room_id: this.props.navigation.getParam('room_id'), user_id: this.props.navigation.getParam('user_id')});
+        }
       });
     });
   }

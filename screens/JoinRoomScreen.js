@@ -48,11 +48,11 @@ export default class JoinRoomScreen extends React.Component {
             }
 
             if(!found){
-                console.log("Es gibt keinen Raum mit diesem Link!");
+                alert("Es gibt keinen Raum mit diesem Link!");
             } else {
                 _that.props.navigation.navigate("Dashboard", {
-                    roomID: _roomID,
-                    userID: _userID,
+                  roomID: _roomID,
+                  userID: _userID,
                   creatorID: _creatorID,
                 });
             }

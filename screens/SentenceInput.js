@@ -42,15 +42,19 @@ export default class SentenceInput extends React.Component {
                         date.getMinutes() + ":" +
                         date.getSeconds();
 
-      firebase.database().ref('roomContent/' + _roomID+'|'+_userID).update({
-          userID: _userID,
-          roomID: _roomID,
-          content: _word,
-          timestamp: _timestamp,
-      });
+      if(_word === ""){
+          alert("Geben Sie ein Wort ein");
+      } else {
+          firebase.database().ref('roomContent/' + _roomID+'|'+_userID).update({
+              userID: _userID,
+              roomID: _roomID,
+              content: _word,
+              timestamp: _timestamp,
+          });
 
-      this.setState({playerHasToWait: true});
-      this.props.navigation.navigate('GameWait', {playerSequence: this.state.playerSequence, room_id: _roomID});
+          this.setState({playerHasToWait: true});
+          this.props.navigation.navigate('GameWait', {playerSequence: this.state.playerSequence, room_id: _roomID, user_id: _userID});
+      }
   }
 
   componentWillMount() {
