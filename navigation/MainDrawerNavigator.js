@@ -41,6 +41,7 @@ const AppDrawer = createDrawerNavigator({
   Settings: SettingsScreen,
   GameStart: SentenceStart,
   GameInput: SentenceInput,
+  GameEnd: SentenceEnd,
 }, {
   contentComponent: CostumDrawerComponent,
   contentOptions: {
