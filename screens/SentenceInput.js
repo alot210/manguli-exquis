@@ -65,21 +65,29 @@ export default class SentenceInput extends React.Component {
           playerSequence.push(item.child('userID').val());
       });
 
-      for(let i = 0; i < 2; i++) {
+      for(let i = 0; i < playerSequence.length; i++) {
         playerSequence.forEach((item, index) => {
           if(this.props.navigation.getParam('user_id') === item) {
-            if(i === index)
-              switch (i) {
+            if(i === index) {
+              console.log('USERID: ' + this.props.navigation.getParam('user_id') + ' ITEM: ' + item + ' I: ' + i + ' INDEX: ' + index + ' MODULO: ' + (i % 3));
+              switch (i % 3) {
                 case 0:
                   this.setState({wordtype: 'Subjekt'});
+                  console.log('Subjekt');
                   break;
                 case 1:
                   this.setState({wordtype: 'Prädikat'});
+                  console.log('Prädikat');
+                  break;
+                case 2:
+                  this.setState({wordtype: 'Objekt'});
+                  console.log('Objekt');
                   break;
                 default:
                   this.setState({wordtype: 'dummy'});
                   break;
               }
+            }
           }
         });
         this.setState({playerSequence: playerSequence});
