@@ -179,7 +179,7 @@ export default class LoginScreen extends React.Component {
             </Item>
             <Item floatingLabel last>
               <Label>Password</Label>
-              <Input value={this.state.password} onChangeText={(password) => this.setState({password})} />
+              <Input secureTextEntry={true} value={this.state.password} onChangeText={(password) => this.setState({password})} />
             </Item>
           </Form>
           <View style={{marginTop: 64}}>

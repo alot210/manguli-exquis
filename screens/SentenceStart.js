@@ -85,12 +85,9 @@ export default class SentenceStart extends React.Component {
         <View style={{flex: 1, justifyContent: 'center', marginTop: 64}}>
           <Text style={{alignSelf: 'center', paddingBottom: 32}}>Satzbau</Text>
           <Text style={{alignSelf: 'center', paddingBottom: 32, paddingLeft: 16, paddingRight: 16}}>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-            labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et
-            ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
-            dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
-            magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet
+            Gespielt wird mit einem festen Satzschema. Jeder erhält ein einen zufälligen Teil des Schemas
+            (Prädikat, Subjekt etc.) und muss dazu ein passendes Wort abschicken. Nachdem alle Mitspieler
+            ihr Wort abgeschickt haben, wird der zufällige Satz zusammengesetzt und für alle Ausgegeben.
           </Text>
           <Text style={{paddingLeft: 16, paddingRight: 16}}>
              {this.state.readyPlayersAmount} von {this.props.navigation.getParam('number_of_players')} Spielern sind

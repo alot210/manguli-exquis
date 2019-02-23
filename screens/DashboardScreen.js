@@ -17,14 +17,16 @@ export default class DashboardScreen extends React.Component {
       room_id: -1,
       gameMode: -1,
       room_name: 'null',
-    }
+      button_disabled: true
+    };
 
     this.currentRoomRef = firebase.database().ref().child('room/'+this.props.navigation.getParam('roomID'));
+    this.currentRoomContentRef = firebase.database().ref('roomContent/');
   }
 
   testfunction(_that) {
     let _roomID = _that.state.room_id;
-    let roomMember = firebase.database().ref('roomContent/');
+    let roomMember = _that.currentRoomContentRef;
     roomMember.on('value', function (snapshot) {
       let data = [];
       snapshot.forEach(function (item) {
@@ -33,6 +35,12 @@ export default class DashboardScreen extends React.Component {
         }
       });
       _that.setState({number_of_players: data.length});
+
+      if(data.length > 1){
+          _that.setState({button_disabled: false});
+      } else {
+          _that.setState({button_disabled: true});
+      }
     });
   }
 
@@ -71,22 +79,29 @@ export default class DashboardScreen extends React.Component {
     this.navigateToStartGame();
   };
 
+  componentWillUnmount() {
+    this.currentRoomContentRef.off();
+  }
+
   render() {
     const CreatorScreen = () => (
       <Container>
         <HeaderBar {...this.props} title='Dashboard'/>
         <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
           <Text style={{}}>{this.state.room_name}</Text>
-          <Text style={{alignSelf: 'center', paddingBottom: 32, paddingLeft: 16, paddingRight: 16}}>
+          <Text style={{alignSelf: 'center', paddingLeft: 16, paddingRight: 16}}>
             Es befinden sich momentan {this.state.number_of_players} Spieler in der Lobby.
           </Text>
-          <Text style={{alignSelf: 'center', paddingBottom: 32}}>Spielmodus auswählen</Text>
+          {this.state.number_of_players <= 1 ? <Text style={{alignSelf: 'center', paddingLeft: 16, paddingRight: 16}}>
+            Es sind zu wenige Spieler um zu starten</Text>: null }
+          <Text style={{alignSelf: 'center', paddingBottom: 32, paddingTop: 32}}>Spielmodus auswählen</Text>
           <Button primary style={{
-            backgroundColor: Colors.secondaryColor,
             alignSelf: 'center',
             marginBottom: 10,
             width: 100
-          }} onPress={ () => {
+          }}
+            disabled={this.state.button_disabled}
+            onPress={ () => {
             //Write Gamemode into Database to call on Listener from navigateToGameStart() for navigating all room
             //members to GameStartScreen
             firebase.database().ref().child('room/' + this.props.navigation.getParam('roomID')).update({gameMode: 0});
@@ -94,19 +109,21 @@ export default class DashboardScreen extends React.Component {
             <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Satz bilden</Text>
           </Button>
           <Button primary style={{
-            backgroundColor: Colors.secondaryColor,
             alignSelf: 'center',
             marginBottom: 10,
             width: 100
-          }} onPress={ () => this.props.navigation.navigate('GameStart')}>
+          }}
+            disabled={this.state.button_disabled}
+            onPress={ () => this.props.navigation.navigate('GameStart')}>
             <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Reime bilden</Text>
           </Button>
           <Button primary style={{
-            backgroundColor: Colors.secondaryColor                                                                                                 ,
             alignSelf: 'center',
             marginBottom: 10,
             width: 100
-          }} onPress={ () => this.props.navigation.navigate('GameStart')}>
+          }}
+            disabled={this.state.button_disabled}
+            onPress={ () => this.props.navigation.navigate('GameStart')}>
             <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Texte schreiben</Text>
           </Button>
         </SafeAreaView>
