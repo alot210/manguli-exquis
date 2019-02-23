@@ -25,7 +25,7 @@ export default class LoginScreen extends React.Component {
         drawerLabel: () => null
     };
 
-    registerUser(){
+    registerUser(_that){
         let _userID = 1;
         let _username = this.state.username;
         let _email = this.state.email;
@@ -44,7 +44,7 @@ export default class LoginScreen extends React.Component {
             _userID = _userID+1;
 
             for(let i = 0; i < data.length; i++){
-                if(data[i]===_email){
+                if(data[i]===_email || _password === "" || _email === ""){
                     found = true;
                     break;
                 } else {
@@ -66,8 +66,11 @@ export default class LoginScreen extends React.Component {
                     userID: _userID
                 });
             } else {
-              //console.log("Sie sind bereits registriert!!!");
-              alert("Sie sind bereits registriert.");
+                if(_password === "" || _email === ""){
+                  alert("Passwort oder Mail fehlen!");
+                } else {
+                  alert("Sie sind bereits registriert.");
+                }
             }
         });
     }
@@ -146,7 +149,7 @@ export default class LoginScreen extends React.Component {
               marginBottom: 10,
               width: 150
             }}
-            onPress={() => this.registerUser()}>
+            onPress={() => this.registerUser(this)}>
             <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Registrieren</Text>
           </Button>
           <Button
