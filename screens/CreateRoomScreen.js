@@ -42,7 +42,8 @@ export default class CreateRoomScreen extends React.Component {
               roomID: _roomID,
               name: _name,
               link: _link,
-              creator: _userID
+              creator: _userID,
+              gameMode: '',
           });
 
           firebase.database().ref('roomContent/' + _roomID+'|'+ _userID).set({
