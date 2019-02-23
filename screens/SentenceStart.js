@@ -11,13 +11,6 @@ export default class SentenceStart extends React.Component {
     drawerLabel: () => null
   };*/
 
-  shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-  }
-
   // gameLogic(_that) {
   //   //Alle Eingaben der User in Firebase eintragen!
   //   let room = firebase.database().ref().child('/room/' + _that.props.navigation.getParam('room_id'));
@@ -44,32 +37,41 @@ export default class SentenceStart extends React.Component {
       disabledButton: false,
       readyPlayersAmount: 0,
     };
+
+    this.currentRoom = firebase.database().ref().child('room/'+this.props.navigation.getParam('room_id'));
   }
+
+  onValueChanged = () => {
+    //Set State FOR EVERY PLAYER in the current room
+    this.setState({readyPlayersAmount: this.getReadyPlayerAmount()});
+    //Navigate ALL PLAYERS to the next screen when ALL PLAYERS are ready
+    if (this.getReadyPlayerAmount() === this.props.navigation.getParam('number_of_players')) {
+      this.props.navigation.navigate('GameInput', {
+        room_id: this.props.navigation.getParam('room_id'),
+        user_id: this.props.navigation.getParam('user_id'),
+      });
+    }
+  };
 
   //Create an on value change listener FOR EVERY PLAYER in the current room
   componentWillMount() {
-    let currentRoom = firebase.database().ref().child('room/'+this.props.navigation.getParam('room_id'));
-    currentRoom.on('value', () => {
-      //Set State FOR EVERY PLAYER in the current room
-      this.setState({readyPlayersAmount: this.getReadyPlayerAmount()});
-      //Navigate ALL PLAYERS to the next screen when ALL PLAYERS are ready
-      if(this.getReadyPlayerAmount() === this.props.navigation.getParam('number_of_players')) {
-        this.props.navigation.navigate('GameInput');
-      }
-    });
+    this.currentRoom.on('value', this.onValueChanged);
+  }
+
+  componentWillUnmount() {
+    this.currentRoom.off('value', this.onValueChanged);
   }
 
   //Function for setting the amount of players who are ready to play into the database and disable button
   gameStart = () => {
-    firebase.database().ref().child('room/'+this.props.navigation.getParam('room_id')).update({readyPlayersAmount: this.getReadyPlayerAmount() + 1});
+    this.currentRoom.update({readyPlayersAmount: this.getReadyPlayerAmount() + 1});
     this.setState({disabledButton: true});
   };
 
   //Function for getting the amount of players who are ready to play from the database
   getReadyPlayerAmount = () => {
     let readyPlayerAmount = 0;
-    let currentRoom = firebase.database().ref().child('room/'+this.props.navigation.getParam('room_id'));
-    currentRoom.on('value', (snapshot) => {
+    this.currentRoom.on('value', (snapshot) => {
       if(snapshot.hasChild('readyPlayersAmount'))
         readyPlayerAmount = snapshot.child('readyPlayersAmount').val();
     });
