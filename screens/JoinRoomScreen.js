@@ -64,6 +64,7 @@ export default class JoinRoomScreen extends React.Component {
       <Container>
         <HeaderBar {...this.props} title='Raum beitreten' />
         <Content>
+
           <Form style={{marginTop: 64}}>
             <Item floatingLabel>
                 <Label>Link einfügen</Label>
@@ -75,6 +76,11 @@ export default class JoinRoomScreen extends React.Component {
             onPress={() => this.enterRoom(this)}>
             <Text>Raum beitreten</Text>
           </Button>
+            <Button
+                style={{alignSelf: 'center'}}
+                onPress={() => this.props.navigation.navigate('LoginScreen')}>
+                <Text>Zurück</Text>
+            </Button>
         </Content>
       </Container>
     );

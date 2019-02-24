@@ -17,7 +17,7 @@ export default class StartScreen extends React.Component {
           <Container>
             <HeaderBar {...this.props} title='Lobby'/>
             <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
-              <Text style={{alignSelf: 'center', paddingBottom: 32}}>Erstelle oder trete einen Raum bei!</Text>
+              <Text style={{alignSelf: 'center', paddingBottom: 32, fontSize: 24, textAlign: 'center'}}>Erstelle oder trete einem Raum bei!</Text>
               <Button primary style={{
                 backgroundColor: Colors.secondaryColor,
                 alignSelf: 'center',

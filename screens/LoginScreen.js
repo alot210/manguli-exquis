@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import {ImageBackground, View} from 'react-native';
 import { Container, Content, Form, Label, Input, Item, Button, Text } from 'native-base';
 import firebase from '../constants/FirebaseConfig';
 
@@ -213,7 +213,10 @@ export default class LoginScreen extends React.Component {
       const DefaultLayout = () => (
         <Container>
           <HeaderBar {...this.props} title='Login' />
+            <Text style={{backgroundColor: '#ffffff', marginTop: 70, marginLeft: 10, marginRight: 10, fontSize: 24, textAlign: 'center'}}>
+                Bist du zum ersten Mal hier? Dann registriere dich.</Text>
         <View style={{flex: 1, justifyContent: 'center'}}>
+
           <Button
             style={{
               backgroundColor: Colors.secondaryColor,
