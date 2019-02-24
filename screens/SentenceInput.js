@@ -6,6 +6,8 @@ import HeaderBar from '../components/HeaderBar';
 
 
 export default class SentenceInput extends React.Component {
+  _isMounted = false;
+
   /*static navigationOptions = {
     //Drawer Label ist null, damit es im DrawerMenü nicht angezeigt wird
     drawerLabel: () => null
@@ -52,12 +54,17 @@ export default class SentenceInput extends React.Component {
               timestamp: _timestamp,
           });
 
+        if(this._isMounted) {
           this.setState({playerHasToWait: true});
           this.props.navigation.navigate('GameWait', {playerSequence: this.state.playerSequence, room_id: _roomID, user_id: _userID});
+        }
       }
   }
 
-  componentWillMount() {
+
+  componentDidMount() {
+    this._isMounted = true;
+
     let playerSequence = [];
     this.roomMemberRef.once('value', (snapshot) => {
       snapshot.forEach((item) => {
@@ -79,15 +86,19 @@ export default class SentenceInput extends React.Component {
                 if(i === index) {
                   switch (i % 3) {
                     case 0:
+                      if(this._isMounted)
                       this.setState({wordtype: 'Subjekt'});
                       break;
                     case 1:
+                      if(this._isMounted)
                       this.setState({wordtype: 'Prädikat'});
                       break;
                     case 2:
+                      if(this._isMounted)
                       this.setState({wordtype: 'Objekt'});
                       break;
                     default:
+                      if(this._isMounted)
                       this.setState({wordtype: 'dummy'});
                       break;
                   }
@@ -96,21 +107,15 @@ export default class SentenceInput extends React.Component {
             });
           }
         }
-        this.setState({playerSequence: playerSequence});
-      }
+        if(this._isMounted)
+          this.setState({playerSequence: playerSequence});
+      });
     });
-
-    // this.currentRoomRef.once('value', (snapshot) => {
-    //   roomCreator = snapshot.child('creator').val();
-    // });
-
-    // if(roomCreator === this.props.navigation.getParam('user_id')) {
-    //   this.shuffleArray(playerSequence);
-    //   this.currentRoomRef.update({playerSequence: playerSequence});
-    // }
-
-    //console.log(this.props.navigation.getParam('user_id') + '  ' + playerSequence);
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
     return (

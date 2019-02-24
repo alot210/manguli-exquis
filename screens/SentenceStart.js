@@ -6,6 +6,8 @@ import firebase from '../constants/FirebaseConfig';
 import HeaderBar from '../components/HeaderBar';
 
 export default class SentenceStart extends React.Component {
+  _isMounted = false;
+
   /*static navigationOptions = {
     //Drawer Label ist null, damit es im DrawerMenü nicht angezeigt wird
     drawerLabel: () => null
@@ -26,6 +28,7 @@ export default class SentenceStart extends React.Component {
 
   onValueChanged = () => {
     //Set State FOR EVERY PLAYER in the current room
+    if(this._isMounted)
       this.setState({readyPlayersAmount: this.getReadyPlayerAmount()});
     //Navigate ALL PLAYERS to the next screen when ALL PLAYERS are ready
     if (this.getReadyPlayerAmount() === this.props.navigation.getParam('number_of_players')) {
@@ -38,18 +41,21 @@ export default class SentenceStart extends React.Component {
   };
 
   //Create an on value change listener FOR EVERY PLAYER in the current room
-  componentWillMount() {
+  componentDidMount() {
+    this._isMounted = true;
     this.currentRoom.on('value', this.onValueChanged);
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
     this.currentRoom.off('value', this.onValueChanged);
   }
 
   //Function for setting the amount of players who are ready to play into the database and disable button
   gameStart = () => {
     this.currentRoom.update({readyPlayersAmount: this.getReadyPlayerAmount() + 1});
-    this.setState({disabledButton: true});
+    if(this._isMounted)
+      this.setState({disabledButton: true});
   };
 
   //Function for getting the amount of players who are ready to play from the database

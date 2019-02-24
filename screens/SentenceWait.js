@@ -6,6 +6,8 @@ import firebase from '../constants/FirebaseConfig';
 import HeaderBar from '../components/HeaderBar';
 
 export default class SentenceWait extends React.Component {
+  _isMounted = false;
+
   /*static navigationOptions = {
     //Drawer Label ist null, damit es im DrawerMenü nicht angezeigt wird
     drawerLabel: () => null
@@ -21,10 +23,12 @@ export default class SentenceWait extends React.Component {
   }
 
   componentWillMount() {
+    this._isMounted = true;
+
     this.roomMemberRef.on('value', (snapshot) => {
       snapshot.forEach((item) => {
         if (item.child('roomID').val() === this.props.navigation.getParam('room_id')) {
-          if(item.child('content').val() !== "") {
+          if(item.child('content').val() !== "" && this._isMounted) {
             this.setState({playerSubmitedValue: this.state.playerSubmitedValue + 1});
           }
         }
@@ -37,6 +41,7 @@ export default class SentenceWait extends React.Component {
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
     this.roomMemberRef.off();
   }
 
