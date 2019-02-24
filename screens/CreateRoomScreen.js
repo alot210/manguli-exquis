@@ -38,31 +38,41 @@ export default class CreateRoomScreen extends React.Component {
           //ID hochzählen für nächsten Raum
           _roomID = _roomID + 1;
 
-          firebase.database().ref('room/' + _roomID).set({
-              roomID: _roomID,
-              name: _name,
-              link: _link,
-              creator: _userID,
-              gameMode: '',
-          });
+          if(_name === ""){
+              alert("Der Raumname darf nicht leer sein!");
+          } else {
+              firebase.database().ref('room/' + _roomID).set({
+                  roomID: _roomID,
+                  name: _name,
+                  link: _link,
+                  creator: _userID,
+                  gameMode: '',
+              });
 
-          firebase.database().ref('roomContent/' + _roomID+'|'+ _userID).set({
-              userID: _userID,
-              roomID: _roomID,
-              content: "",
-              timestamp: ""
-          });
+              firebase.database().ref('roomContent/' + _roomID + '|' + _userID).set({
+                  userID: _userID,
+                  roomID: _roomID,
+                  content: "",
+                  timestamp: ""
+              });
 
-          Clipboard.setString(_link);
+              Clipboard.setString(_link);
 
-          Alert.alert(
-              "Ihr Raum wurde erstellt",
-              "Der Link zu Ihrem Raum lautet:\n" + _link + "\nDer Link wurde in die Zwischenablage kopiert!",
-              [
-                  {text: "OK", onPress: () => _that.props.navigation.navigate("Dashboard", {creatorID: _userID, userID: _userID, roomID: _roomID})},
-              ],
-              {cancelable: false},
-          );
+              Alert.alert(
+                  "Ihr Raum wurde erstellt",
+                  "Der Link zu Ihrem Raum lautet:\n" + _link + "\nDer Link wurde in die Zwischenablage kopiert!",
+                  [
+                      {text: "OK",
+                          onPress: () => _that.props.navigation.navigate("Dashboard", {
+                              creatorID: _userID,
+                              userID: _userID,
+                              roomID: _roomID
+                          })
+                      },
+                  ],
+                  {cancelable: false},
+              );
+          }
       });
   }
 

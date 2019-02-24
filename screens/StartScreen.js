@@ -22,7 +22,7 @@ export default class StartScreen extends React.Component {
                 backgroundColor: Colors.secondaryColor,
                 alignSelf: 'center',
                 marginBottom: 10,
-                width: 100
+                width: 200
               }} onPress={ () => this.props.navigation.navigate('CreateRoom', {userID: _userId})}>
               <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Erstellen</Text>
               </Button>
@@ -30,7 +30,7 @@ export default class StartScreen extends React.Component {
                 backgroundColor: Colors.secondaryColor                                                                                                 ,
                 alignSelf: 'center',
                 marginBottom: 10,
-                width: 100
+                width: 200
               }} onPress={ () => this.props.navigation.navigate('JoinRoom', {userID: _userId})}>
                 <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Beitreten</Text>
               </Button>

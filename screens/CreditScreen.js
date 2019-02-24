@@ -24,7 +24,7 @@ export default class CreditScreen extends React.Component {
                         style={{alignSelf: 'center', paddingBottom: 32, color: Colors.primaryTextColor, fontSize: 24}}>Betreuende
                         Professorin</Text>
                     <Text style={{alignSelf: 'center', paddingBottom: 20}}>Christina Karababa</Text>
-                    <Text style={{alignSelf: 'center', paddingTop: 200, paddingLeft: 20, paddingRight: 20}}>Das Projekt
+                    <Text style={{alignSelf: 'center', paddingTop: 20, paddingLeft: 20, paddingRight: 20}}>Das Projekt
                         "Manguli-Exquis" entstand im Rahmen des Moduls "Collaborative-Tools" an der Hochschule
                         Düsseldorf.</Text>
                 </SafeAreaView>

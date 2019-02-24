@@ -87,15 +87,15 @@ export default class SentenceInput extends React.Component {
                   switch (i % 3) {
                     case 0:
                       if(this._isMounted)
-                      this.setState({wordtype: 'Subjekt'});
+                      this.setState({wordtype: 'Subjekt (Wer oder was?)'});
                       break;
                     case 1:
                       if(this._isMounted)
-                      this.setState({wordtype: 'Prädikat'});
+                      this.setState({wordtype: 'Prädikat (Verb des Satzes)'});
                       break;
                     case 2:
                       if(this._isMounted)
-                      this.setState({wordtype: 'Objekt'});
+                      this.setState({wordtype: 'Objekt (Wen oder was?)'});
                       break;
                     default:
                       if(this._isMounted)

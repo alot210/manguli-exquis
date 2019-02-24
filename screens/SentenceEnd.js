@@ -42,12 +42,16 @@ export default class SentenceEnd extends React.Component {
         });
     }
 
-    newGame(_that) {
+    newGame(_that, _logout) {
         firebase.database().ref().child('room/' + _that.props.navigation.getParam('room_id')).update({gameMode: ""});
         firebase.database().ref().child('room/' + _that.props.navigation.getParam('room_id')).update({readyPlayersAmount: 0});
         firebase.database().ref().child('roomContent/' + _that.props.navigation.getParam('room_id')+ "|" + _that.props.navigation.getParam('user_id')).update({content: ""});
-
-        this.props.navigation.navigate('Dashboard', {user_id: _that.props.navigation.getParam('user_id'), room_id: _that.props.navigation.getParam('room_id')})
+        
+        if(_logout){
+            _that.props.navigation.navigate('Settings', {user_id: _that.props.navigation.getParam('user_id')})
+        } else {
+            _that.props.navigation.navigate('Dashboard', {user_id: _that.props.navigation.getParam('user_id'), room_id: _that.props.navigation.getParam('room_id')})
+        }
     }
 
   render() {
@@ -65,13 +69,13 @@ export default class SentenceEnd extends React.Component {
         </View>
         <View style={{flex: 1, justifyContent: 'center'}}>
           <Button
-            style={{alignSelf: 'center'}}
-            onPress={ () => this.newGame(this)}>
+            style={{alignSelf: 'center', marginBottom: 20, width: 200}}
+            onPress={ () => this.newGame(this, false)}>
             <Text>Neues Spiel</Text>
           </Button>
           <Button
-            style={{alignSelf: 'center'}}
-            onPress={ () => this.props.navigation.navigate('Settings', {user_id: this.props.navigation.getParam('user_id')})}>
+            style={{alignSelf: 'center', width: 200}}
+            onPress={ () => this.newGame(this, true)}>
             <Text>Logout</Text>
           </Button>
         </View>

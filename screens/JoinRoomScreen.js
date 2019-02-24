@@ -72,13 +72,13 @@ export default class JoinRoomScreen extends React.Component {
             </Item>
           </Form>
           <Button
-            style={{alignSelf: 'center'}}
+            style={{alignSelf: 'center', marginTop: 10, width: 200}}
             onPress={() => this.enterRoom(this)}>
             <Text>Raum beitreten</Text>
           </Button>
             <Button
-                style={{alignSelf: 'center'}}
-                onPress={() => this.props.navigation.navigate('LoginScreen')}>
+                style={{alignSelf: 'center', marginTop: 10, width: 200}}
+                onPress={() => this.props.navigation.navigate('Lobby')}>
                 <Text>Zurück</Text>
             </Button>
         </Content>

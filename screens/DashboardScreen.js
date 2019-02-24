@@ -88,9 +88,9 @@ export default class DashboardScreen extends React.Component {
       <Container>
         <HeaderBar {...this.props} title='Dashboard'/>
         <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
-          <Text style={{}}>{this.state.room_name}</Text>
+          <Text style={{paddingBottom: 20, alignSelf: 'center'}}>Im Raum: {this.state.room_name}</Text>
           <Text style={{alignSelf: 'center', paddingLeft: 16, paddingRight: 16}}>
-            Es befinden sich momentan {this.state.number_of_players} Spieler in der Lobby.
+            Es befinden sich momentan {"\n"}{this.state.number_of_players} Spieler in der Lobby.
           </Text>
           {this.state.number_of_players <= 1 ? <Text style={{alignSelf: 'center', paddingLeft: 16, paddingRight: 16}}>
             Es sind zu wenige Spieler um zu starten</Text>: null }
@@ -113,7 +113,7 @@ export default class DashboardScreen extends React.Component {
             marginBottom: 10,
             width: 100
           }}
-            disabled={this.state.button_disabled}
+            disabled={true}
             onPress={ () => this.props.navigation.navigate('GameStart')}>
             <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Reime bilden</Text>
           </Button>
@@ -122,7 +122,7 @@ export default class DashboardScreen extends React.Component {
             marginBottom: 10,
             width: 100
           }}
-            disabled={this.state.button_disabled}
+            disabled={true}
             onPress={ () => this.props.navigation.navigate('GameStart')}>
             <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Texte schreiben</Text>
           </Button>
@@ -135,11 +135,11 @@ export default class DashboardScreen extends React.Component {
       <Container>
         <HeaderBar {...this.props} title='Dashboard'/>
         <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
-          <Text style={{}}>{this.state.room_name}</Text>
+          <Text style={{paddingBottom: 20, alignSelf: 'center'}}>Im Raum: {this.state.room_name}</Text>
           <Text style={{alignSelf: 'center', paddingBottom: 32, paddingLeft: 16, paddingRight: 16}}>
-            Es befinden sich momentan {this.state.number_of_players} Spieler in der Lobby.
+            Es befinden sich momentan {"\n"}{this.state.number_of_players} Spieler in der Lobby.
           </Text>
-          <Text style={{alignSelf: 'center'}}>Warte bis der Spielleiter ein Spiel ausgesucht hat.</Text>
+          <Text style={{alignSelf: 'center'}}>Warte bis der Spielleiter{"\n"}ein Spiel ausgesucht hat.</Text>
         </SafeAreaView>
       </Container>
     );

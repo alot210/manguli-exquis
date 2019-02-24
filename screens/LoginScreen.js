@@ -147,7 +147,7 @@ export default class LoginScreen extends React.Component {
               backgroundColor: Colors.secondaryColor,
               alignSelf: 'center',
               marginBottom: 10,
-              width: 150
+              width: 200
             }}
             onPress={() => this.registerUser(this)}>
             <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Registrieren</Text>
@@ -157,7 +157,7 @@ export default class LoginScreen extends React.Component {
               backgroundColor: Colors.secondaryColor,
               alignSelf: 'center',
               marginBottom: 10,
-              width: 150
+              width: 200
             }}
             onPress={()=> this.setState({register: false})}
           >
