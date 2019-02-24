@@ -11,23 +11,6 @@ export default class SentenceStart extends React.Component {
     drawerLabel: () => null
   };*/
 
-  // gameLogic(_that) {
-  //   //Alle Eingaben der User in Firebase eintragen!
-  //   let room = firebase.database().ref().child('/room/' + _that.props.navigation.getParam('room_id'));
-  //   let number_of_players = _that.props.navigation.getParam('number_of_players');
-  //   let sequence = [];
-  //
-  //   room.on('value', function (snapshot) {
-  //     console.log(snapshot);
-  //     sequence = snapshot.child('roomMember').val();
-  //     _that.shuffleArray(sequence);
-  //     for(let i = 0; i < sequence.length; i++) {
-  //       console.log(sequence[i]);
-  //     }
-  //   });
-  //
-  // }
-
   constructor(props) {
     super(props);
 
@@ -43,12 +26,13 @@ export default class SentenceStart extends React.Component {
 
   onValueChanged = () => {
     //Set State FOR EVERY PLAYER in the current room
-    this.setState({readyPlayersAmount: this.getReadyPlayerAmount()});
+      this.setState({readyPlayersAmount: this.getReadyPlayerAmount()});
     //Navigate ALL PLAYERS to the next screen when ALL PLAYERS are ready
     if (this.getReadyPlayerAmount() === this.props.navigation.getParam('number_of_players')) {
       this.props.navigation.navigate('GameInput', {
         room_id: this.props.navigation.getParam('room_id'),
         user_id: this.props.navigation.getParam('user_id'),
+        ready_player_amount: this.state.readyPlayersAmount,
       });
     }
   };

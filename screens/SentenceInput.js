@@ -65,31 +65,37 @@ export default class SentenceInput extends React.Component {
           playerSequence.push(item.child('userID').val());
       });
 
-      for(let i = 0; i < playerSequence.length; i++) {
-        playerSequence.forEach((item, index) => {
-          if(this.props.navigation.getParam('user_id') === item) {
-            if(i === index) {
-              console.log('USERID: ' + this.props.navigation.getParam('user_id') + ' ITEM: ' + item + ' I: ' + i + ' INDEX: ' + index + ' MODULO: ' + (i % 3));
-              switch (i % 3) {
-                case 0:
-                  this.setState({wordtype: 'Subjekt'});
-                  console.log('Subjekt');
-                  break;
-                case 1:
-                  this.setState({wordtype: 'Prädikat'});
-                  console.log('Prädikat');
-                  break;
-                case 2:
-                  this.setState({wordtype: 'Objekt'});
-                  console.log('Objekt');
-                  break;
-                default:
-                  this.setState({wordtype: 'dummy'});
-                  break;
+      if(this.props.navigation.getParam('ready_player_amount') === playerSequence.length) {
+        this.shuffleArray(playerSequence);
+        this.currentRoomRef.update({playerSequence: playerSequence});
+      }
+
+      this.currentRoomRef.once('value', (snapshot) => {
+        let newPlayerSequence = snapshot.child('playerSequence').val();
+        if(newPlayerSequence !== null) {
+          for(let i = 0; i < newPlayerSequence.length; i++) {
+            newPlayerSequence.forEach((item, index) => {
+              if(this.props.navigation.getParam('user_id') === item) {
+                if(i === index) {
+                  switch (i % 3) {
+                    case 0:
+                      this.setState({wordtype: 'Subjekt'});
+                      break;
+                    case 1:
+                      this.setState({wordtype: 'Prädikat'});
+                      break;
+                    case 2:
+                      this.setState({wordtype: 'Objekt'});
+                      break;
+                    default:
+                      this.setState({wordtype: 'dummy'});
+                      break;
+                  }
+                }
               }
-            }
+            });
           }
-        });
+        }
         this.setState({playerSequence: playerSequence});
       }
     });
