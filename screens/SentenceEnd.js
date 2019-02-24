@@ -13,6 +13,7 @@ export default class SentenceEnd extends React.Component {
         };
 
         this.roomContentRef = firebase.database().ref('roomContent');
+        this.currentRoomRef = firebase.database().ref().child('room/'+this.props.navigation.getParam('room_id'));
     }
   /*static navigationOptions = {
     //Drawer Label ist null, damit es im DrawerMenü nicht angezeigt wird
@@ -21,14 +22,23 @@ export default class SentenceEnd extends React.Component {
 
     componentWillMount() {
         let _sentence = "";
-        this.roomContentRef.once('value', (snapshot) => {
-            snapshot.forEach((item) => {
-                if (item.child('roomID').val() === this.props.navigation.getParam('room_id')) {
-                    _sentence += item.child('content').val() + " ";
-                }
-            });
+        let playerSequence = [];
+        this.currentRoomRef.once('value', (snapshot) => {
+          playerSequence = snapshot.child('playerSequence').val();
 
-            this.setState({sentence: _sentence});
+          this.roomContentRef.once('value', (snapshot) => {
+            playerSequence.forEach((user) => {
+              snapshot.forEach((item) => {
+                if(item.child('roomID').val() === this.props.navigation.getParam('room_id')) {
+                  if(item.child('userID').val() === user) {
+                    console.log('HIT!!! '+item.child('content').val());
+                    _sentence += item.child('content').val() + " ";
+                  }
+                }
+              });
+              this.setState({sentence: _sentence});
+            });
+          });
         });
     }
 
