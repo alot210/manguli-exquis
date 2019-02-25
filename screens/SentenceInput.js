@@ -8,10 +8,11 @@ import HeaderBar from '../components/HeaderBar';
 export default class SentenceInput extends React.Component {
   _isMounted = false;
 
-  /*static navigationOptions = {
+  static navigationOptions = {
     //Drawer Label ist null, damit es im DrawerMenü nicht angezeigt wird
     drawerLabel: () => null
-  };*/
+  };
+
     constructor(props){
       super(props);
       this.state = {

@@ -32,12 +32,6 @@ const AppDrawer = createDrawerNavigator({
   CreateRoom: CreateRoomScreen,
   JoinRoom: JoinRoomScreen,
   Dashboard: DashboardScreen,
-  Tutorial: {
-    screen: (props) => <TutorialScreen {...props} userID={0} />,
-  },
-  Credits: {
-    screen: (props) => <CreditScreen {...props} userID={0}/>,
-  },
   Settings: SettingsScreen,
   GameStart: SentenceStart,
   GameInput: SentenceInput,

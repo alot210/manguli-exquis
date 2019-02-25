@@ -15,10 +15,10 @@ export default class SentenceEnd extends React.Component {
         this.roomContentRef = firebase.database().ref('roomContent');
         this.currentRoomRef = firebase.database().ref().child('room/'+this.props.navigation.getParam('room_id'));
     }
-  /*static navigationOptions = {
+  static navigationOptions = {
     //Drawer Label ist null, damit es im DrawerMenü nicht angezeigt wird
     drawerLabel: () => null
-  };*/
+  };
 
     componentWillMount() {
         let _sentence = "";

@@ -6,10 +6,10 @@ import Colors from "../constants/Colors";
 import HeaderBar from "../components/HeaderBar";
 
 export default class StartScreen extends React.Component {
-  // static navigationOptions = {
-  //   //Drawer Label ist null, damit es im DrawerMenü nicht angezeigt wird
-  //   drawerLabel: () => null
-  // };
+  static navigationOptions = {
+    //Drawer Label ist null, damit es im DrawerMenü nicht angezeigt wird
+    drawerLabel: () => null
+  };
 
   render() {
       let _userId = this.props.navigation.getParam('userID', 0);

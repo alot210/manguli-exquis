@@ -6,11 +6,6 @@ import firebase from '../constants/FirebaseConfig';
 import HeaderBar from '../components/HeaderBar';
 
 export default class SettingsScreen extends React.Component {
-   static navigationOptions = {
-     //Drawer Label ist null, damit es im DrawerMenü nicht angezeigt wird
-     drawerLabel: () => null
-   };
-
   logout(_that) {
       firebase.database().ref('user/' + _that.props.navigation.getParam('user_id')).update({
           islogged: false
