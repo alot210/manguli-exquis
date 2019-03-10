@@ -82,17 +82,22 @@ export default class CreateRoomScreen extends React.Component {
       <Container>
           <HeaderBar {...this.props} title='Raum Erstellung' />
           <Content>
-              <Form style={{marginTop: 64}}>
-                  <Item floatingLabel>
-                      <Label>Raumname</Label>
-                      <Input value={this.state.name} onChangeText={(name) => this.setState({name})} />
-                  </Item>
-              </Form>
-              <Button
-                  style={{alignSelf: 'center'}}
-                  onPress={() => this.createRoom(this)}>
-                  <Text>Raum erstellen</Text>
-              </Button>
+            <Form style={{marginTop: 64}}>
+                <Item floatingLabel>
+                    <Label>Raumname</Label>
+                    <Input value={this.state.name} onChangeText={(name) => this.setState({name})} />
+                </Item>
+            </Form>
+            <Button
+                style={{alignSelf: 'center'}}
+                onPress={() => this.createRoom(this)}>
+                <Text>Raum erstellen</Text>
+            </Button>
+            <Button
+              style={{alignSelf: 'center', marginTop: 10, width: 200}}
+              onPress={() => this.props.navigation.navigate('Lobby')}>
+              <Text>Zurück</Text>
+            </Button>
           </Content>
       </Container>
     );
