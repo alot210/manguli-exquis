@@ -50,13 +50,16 @@ export default class DashboardScreen extends React.Component {
     currentRoom.on('value', (snapshot) => {
       let gameMode = snapshot.child('gameMode').val();
       //Navigate to GameStartScreen when gameMode is a value of Database
-      if(gameMode !== "")
+      if(gameMode !== "") {
+        console.log('NAVIGATE TO GAME START!');
+
         this.props.navigation.navigate('GameStart', {
           room_id: this.state.room_id,
           user_id: this.props.navigation.getParam('userID'),
           number_of_players: this.state.number_of_players,
+          gameMode: gameMode,
         });
-
+      }
     });
   };
 
@@ -81,6 +84,7 @@ export default class DashboardScreen extends React.Component {
 
   componentWillUnmount() {
     this.currentRoomContentRef.off();
+    this.currentRoomRef.off();
   }
 
   render() {
@@ -113,8 +117,7 @@ export default class DashboardScreen extends React.Component {
             marginBottom: 10,
             width: 100
           }}
-            disabled={true}
-            onPress={ () => this.props.navigation.navigate('GameStart')}>
+            onPress={ () => firebase.database().ref().child('room/' + this.props.navigation.getParam('roomID')).update({gameMode: 1})}>
             <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Reime bilden</Text>
           </Button>
           <Button primary style={{

@@ -24,25 +24,73 @@ export default class SentenceStart extends React.Component {
     };
 
     this.currentRoom = firebase.database().ref().child('room/'+this.props.navigation.getParam('room_id'));
+    this.currentRoomContentRef = firebase.database().ref('roomContent/');
   }
 
-  onValueChanged = () => {
+  shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  };
+
+  onValueChanged = (snapshot) => {
     //Set State FOR EVERY PLAYER in the current room
     if(this._isMounted)
       this.setState({readyPlayersAmount: this.getReadyPlayerAmount()});
     //Navigate ALL PLAYERS to the next screen when ALL PLAYERS are ready
     if (this.getReadyPlayerAmount() === this.props.navigation.getParam('number_of_players')) {
-      this.props.navigation.navigate('GameInput', {
-        room_id: this.props.navigation.getParam('room_id'),
-        user_id: this.props.navigation.getParam('user_id'),
-        ready_player_amount: this.state.readyPlayersAmount,
-      });
+
+      console.log('playerSequence: '+snapshot.child('playerSequence').val());
+
+      if(this.props.navigation.getParam('gameMode') !== 0) {
+        if(snapshot.child('playerSequence').val()[0] === this.props.navigation.getParam('user_id'))
+          this.props.navigation.navigate('GameInput', {
+            room_id: this.props.navigation.getParam('room_id'),
+            user_id: this.props.navigation.getParam('user_id'),
+            ready_player_amount: this.state.readyPlayersAmount,
+            playerSequence: snapshot.child('playerSequence').val(),
+            gameMode: this.props.navigation.getParam('gameMode'),
+          });
+        else
+          this.props.navigation.navigate('GameWait', {
+            room_id: this.props.navigation.getParam('room_id'),
+            user_id: this.props.navigation.getParam('user_id'),
+            ready_player_amount: this.state.readyPlayersAmount,
+            playerSequence: snapshot.child('playerSequence').val(),
+            gameMode: this.props.navigation.getParam('gameMode'),
+          });
+      }
+      else
+        this.props.navigation.navigate('GameInput', {
+          room_id: this.props.navigation.getParam('room_id'),
+          user_id: this.props.navigation.getParam('user_id'),
+          ready_player_amount: this.state.readyPlayersAmount,
+          playerSequence: snapshot.child('playerSequence').val(),
+          gameMode: this.props.navigation.getParam('gameMode'),
+        });
     }
   };
 
   //Create an on value change listener FOR EVERY PLAYER in the current room
   componentDidMount() {
     this._isMounted = true;
+
+    let playerSequence = [];
+
+    this.currentRoomContentRef.once('value', (snapshot) => {
+      snapshot.forEach((item) => {
+        if (item.child('roomID').val() === this.props.navigation.getParam('room_id'))
+          playerSequence.push(item.child('userID').val());
+      });
+
+      if (this.props.navigation.getParam('number_of_players') === playerSequence.length) {
+        this.shuffleArray(playerSequence);
+        this.currentRoom.update({playerSequence: playerSequence});
+        console.log(playerSequence);
+      }
+    });
+
     this.currentRoom.on('value', this.onValueChanged);
   }
 
@@ -69,7 +117,7 @@ export default class SentenceStart extends React.Component {
   };
 
   render() {
-    return (
+    const SentenceGame = () => (
       <Container>
         <HeaderBar {...this.props} title='Satzbau'/>
         <View style={{flex: 1, justifyContent: 'center', marginTop: 64}}>
@@ -80,8 +128,8 @@ export default class SentenceStart extends React.Component {
             ihr Wort abgeschickt haben, wird der zufällige Satz zusammengesetzt und für alle Ausgegeben.
           </Text>
           <Text style={{paddingLeft: 16, paddingRight: 16}}>
-             {this.state.readyPlayersAmount} von {this.props.navigation.getParam('number_of_players')} Spielern sind
-             bereit. Warte bis alle Spieler bereit sind.
+            {this.state.readyPlayersAmount} von {this.props.navigation.getParam('number_of_players')} Spielern sind
+            bereit. Warte bis alle Spieler bereit sind.
           </Text>
         </View>
         <View style={{flex: 1, justifyContent: 'center'}}>
@@ -93,6 +141,42 @@ export default class SentenceStart extends React.Component {
           </Button>
         </View>
       </Container>
-    )
+    );
+
+    const PoemGame = () => (
+      <Container>
+        <HeaderBar {...this.props} title='Gedicht'/>
+        <View style={{flex: 1, justifyContent: 'center', marginTop: 64}}>
+          <Text style={{alignSelf: 'center', paddingBottom: 32}}>Gedicht</Text>
+          <Text style={{alignSelf: 'center', paddingBottom: 32, paddingLeft: 16, paddingRight: 16}}>
+            Gespielt wird mit einem festen Reimschema. Es wird zufällig ein Spieler ausgesucht der begint.
+            Das letzte Wort seiner Gedichtszeile, wird dem nächsten Spieler angezeigt. Auf dieses Wort soll
+            die nächste Gedichtszeile geschrieben werden, solange bis alle Spieler fertig sind. Nachdem alle Mitspieler
+            ihre Gedichtszeile abgeschickt haben, wird das Gedicht zusammengesetzt und für alle Ausgegeben.
+          </Text>
+          <Text style={{paddingLeft: 16, paddingRight: 16}}>
+            {this.state.readyPlayersAmount} von {this.props.navigation.getParam('number_of_players')} Spielern sind
+            bereit. Warte bis alle Spieler bereit sind.
+          </Text>
+        </View>
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <Button
+            style={{alignSelf: 'center'}}
+            onPress={ () => this.gameStart()}
+            disabled={this.state.disabledButton}>
+            <Text>Starten Jetzt</Text>
+          </Button>
+        </View>
+      </Container>
+    );
+
+    switch (this.props.navigation.getParam('gameMode')) {
+      case 0:
+        return SentenceGame();
+      case 1:
+        return PoemGame();
+      default:
+        return null;
+    }
   }
 }
