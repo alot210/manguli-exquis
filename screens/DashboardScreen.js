@@ -51,7 +51,7 @@ export default class DashboardScreen extends React.Component {
       let gameMode = snapshot.child('gameMode').val();
       //Navigate to GameStartScreen when gameMode is a value of Database
       if(gameMode !== "") {
-        console.log('NAVIGATE TO GAME START!');
+        // console.log('NAVIGATE TO GAME START!');
 
         this.props.navigation.navigate('GameStart', {
           room_id: this.state.room_id,
@@ -125,8 +125,7 @@ export default class DashboardScreen extends React.Component {
             marginBottom: 10,
             width: 100
           }}
-            disabled={true}
-            onPress={ () => this.props.navigation.navigate('GameStart')}>
+            onPress={ () => firebase.database().ref().child('room/' + this.props.navigation.getParam('roomID')).update({gameMode: 2})}>
             <Text style={{marginLeft: 'auto', marginRight: 'auto'}}>Texte schreiben</Text>
           </Button>
         </SafeAreaView>

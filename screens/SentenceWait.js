@@ -114,11 +114,25 @@ export default class SentenceWait extends React.Component {
       </Container>
     );
 
+    const TextGameWait = () => (
+      <Container>
+        <HeaderBar {...this.props} title='Text'/>
+        <View style={{flex: 1, justifyContent: 'center', marginTop: 64}}>
+          <Text style={{alignSelf: 'center', paddingBottom: 32}}>Text</Text>
+          <Text style={{alignSelf: 'center', paddingLeft: 16, paddingRight: 16}}>
+            Warte bis die anderen Fertig sind...
+          </Text>
+        </View>
+      </Container>
+    );
+
     switch (this.props.navigation.getParam('gameMode')) {
       case 0:
         return SentenceGameWait();
       case 1:
         return PoemGameWait();
+      case 2:
+        return TextGameWait();
       default:
         return null;
     }

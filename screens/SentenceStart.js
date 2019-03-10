@@ -87,7 +87,7 @@ export default class SentenceStart extends React.Component {
       if (this.props.navigation.getParam('number_of_players') === playerSequence.length) {
         this.shuffleArray(playerSequence);
         this.currentRoom.update({playerSequence: playerSequence});
-        console.log(playerSequence);
+        // console.log(playerSequence);
       }
     });
 
@@ -170,11 +170,41 @@ export default class SentenceStart extends React.Component {
       </Container>
     );
 
+    const TextGame = () => (
+      <Container>
+        <HeaderBar {...this.props} title='Text'/>
+        <View style={{flex: 1, justifyContent: 'center', marginTop: 64}}>
+          <Text style={{alignSelf: 'center', paddingBottom: 32}}>Text</Text>
+          <Text style={{alignSelf: 'center', paddingBottom: 32, paddingLeft: 16, paddingRight: 16}}>
+            Gespielt wird in einer zufälligen Reihenfolge, in der ein Text geschrieben werden soll.
+            Es wird zufällig ein Spieler ausgesucht der begint. Der letzte Satz des Textes vom Vorgänger,
+            wird dem nächsten Spieler angezeigt. Auf diesen Satz soll der nächste Textabschnitt geschrieben werden,
+            solange bis alle Spieler fertig sind. Nachdem alle Mitspieler ihren Textabschnitt abgeschickt haben,
+            wird der Text zusammengesetzt und für alle Ausgegeben.
+          </Text>
+          <Text style={{paddingLeft: 16, paddingRight: 16}}>
+            {this.state.readyPlayersAmount} von {this.props.navigation.getParam('number_of_players')} Spielern sind
+            bereit. Warte bis alle Spieler bereit sind.
+          </Text>
+        </View>
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <Button
+            style={{alignSelf: 'center'}}
+            onPress={ () => this.gameStart()}
+            disabled={this.state.disabledButton}>
+            <Text>Starten Jetzt</Text>
+          </Button>
+        </View>
+      </Container>
+    );
+
     switch (this.props.navigation.getParam('gameMode')) {
       case 0:
         return SentenceGame();
       case 1:
         return PoemGame();
+      case 2:
+        return TextGame();
       default:
         return null;
     }

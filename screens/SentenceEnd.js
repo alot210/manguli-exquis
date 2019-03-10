@@ -121,11 +121,40 @@ export default class SentenceEnd extends React.Component {
       </Container>
     );
 
+    const TextGameView = () => (
+      <Container>
+        <HeaderBar {...this.props} title='Text'/>
+        <View style={{flex: 1, justifyContent: 'center', marginTop: 64}}>
+          <Text style={{alignSelf: 'center', paddingBottom: 32}}>Text</Text>
+          <Text style={{alignSelf: 'center', paddingLeft: 16, paddingRight: 16, paddingBottom: 16}}>
+            Der Text lautet:
+          </Text>
+          <Text style={{alignSelf: 'center'}}>
+            {this.state.sentence}
+          </Text>
+        </View>
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <Button
+            style={{alignSelf: 'center', marginBottom: 20, width: 200}}
+            onPress={ () => this.newGame(this, false)}>
+            <Text>Neues Spiel</Text>
+          </Button>
+          <Button
+            style={{alignSelf: 'center', width: 200}}
+            onPress={ () => this.newGame(this, true)}>
+            <Text>Logout</Text>
+          </Button>
+        </View>
+      </Container>
+    );
+
     switch (this.props.navigation.getParam('gameMode')) {
       case 0:
         return SentenceGameView();
       case 1:
         return PoemGameView();
+      case 2:
+        return TextGameView();
       default:
         return null;
     }

@@ -99,7 +99,7 @@ export default class SentenceInput extends React.Component {
 
       this.currentRoomRef.once('value', (snapshot) => {
         let prevUser = snapshot.child('playerSequence').val()[snapshot.child('playerSubmitedValue').val() - 1];
-        console.log('prevUSER: '+prevUser);
+        // console.log('prevUSER: '+prevUser);
         this.roomMemberRef.once('value', (innerSnapshot) => {
           innerSnapshot.forEach((item) => {
             if (item.child('roomID').val() === this.props.navigation.getParam('room_id')) {
@@ -114,10 +114,31 @@ export default class SentenceInput extends React.Component {
       });
   };
 
+    textGameLogic() {
+      if(this._isMounted)
+        this.setState({wordtype: 'einen Textabschnitt'});
+
+      this.currentRoomRef.once('value', (snapshot) => {
+        let prevUser = snapshot.child('playerSequence').val()[snapshot.child('playerSubmitedValue').val() - 1];
+        // console.log('prevUSER: '+prevUser);
+        this.roomMemberRef.once('value', (innerSnapshot) => {
+          innerSnapshot.forEach((item) => {
+            if (item.child('roomID').val() === this.props.navigation.getParam('room_id')) {
+              if (item.child('userID').val() === prevUser) {
+                let lastSentence = item.child('content').val().trim().split(".").pop();
+                if(this._isMounted)
+                  this.setState({wordtype: 'nach dem Satz: '+lastSentence+' einen Textabschnitt schreiben'});
+              }
+            }
+          });
+        });
+      });
+    }
+
   componentDidMount() {
     this._isMounted = true;
 
-    console.log('GameInput: '+this.props.navigation.getParam('gameMode'));
+    // console.log('GameInput: '+this.props.navigation.getParam('gameMode'));
 
     switch (this.props.navigation.getParam('gameMode')) {
       case 0:
@@ -125,6 +146,9 @@ export default class SentenceInput extends React.Component {
         break;
       case 1:
         this.poemGameLogic();
+        break;
+      case 2:
+        this.textGameLogic();
         break;
     }
   };
@@ -184,11 +208,38 @@ export default class SentenceInput extends React.Component {
       </Container>
     );
 
+    const TextGameView = () => (
+      <Container>
+        <HeaderBar {...this.props} title='Text'/>
+        <View style={{flex: 1, justifyContent: 'center', marginTop: 64}}>
+          <View>
+            <Text style={{}}>Bitte {this.state.wordtype}.</Text>
+            <Text style={{alignSelf: 'center', paddingBottom: 32}}>Text</Text>
+            <Form style={{alignSelf: 'center', width: 132}}>
+              <Item floatingLabel>
+                <Label>Textabschnitt</Label>
+                <Input value={this.state.word} onChangeText={(word) => this.setState({word})} />
+              </Item>
+            </Form>
+          </View>
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <Button
+              style={{alignSelf: 'center'}}
+              onPress={() => this.addSentence()}>
+              <Text>Abschicken</Text>
+            </Button>
+          </View>
+        </View>
+      </Container>
+    );
+
     switch (this.props.navigation.getParam('gameMode')) {
       case 0:
         return SentenceGameView();
       case 1:
         return PoemGameView();
+      case 2:
+        return TextGameView();
       default:
         return null;
     }
